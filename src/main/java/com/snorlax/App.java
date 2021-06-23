@@ -1,13 +1,10 @@
 package com.snorlax;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,28 +24,25 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        /* 1st way
-         */
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL path = new URL("file:src/main/resources/com.snorlax/Login.fxml");
         System.out.println(path.toString());
         fxmlLoader.setLocation(path);
         scene = new Scene(fxmlLoader.load());
-        /*
-         * Second way
-         */
-        //scene = new Scene(loadFXML("filename"));
+        //Icon
+        Image image = new Image("file:src/main/resources/images/upv-bis.png");
+        primaryStage.getIcons().add(image);
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
-        //this.scene = new Scene(loadFXML("Login"));
         primaryStage.setScene(this.scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
     /**
-     *
-     * @param fxml
-     * @return
-     * @throws IOException
+     * It's supposed to load an fxml file but App.class.getResource don't works
+     * @param fxml file name
+     * @return fxml file loaded
+     * @throws IOException when the file is not founded
      */
     private static Parent loadFXML(String fxml) throws IOException {
         System.out.println(App.class.getResource( fxml + ".fxml"));

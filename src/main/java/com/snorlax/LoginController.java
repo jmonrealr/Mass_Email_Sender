@@ -24,5 +24,7 @@ public class LoginController {
         if (email.equals("email") && password.equals("password")){
             System.out.println("Login Successful");
         }
+
+        //Call GUI
     }
 }
