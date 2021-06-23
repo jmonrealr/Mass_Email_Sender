@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Snorlax Squad
@@ -27,33 +28,19 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         /* 1st way
+         */
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL path = new URL("file:src/main/resources/com.snorlax/filename.fxml");
+        URL path = new URL("file:src/main/resources/com.snorlax/Login.fxml");
         System.out.println(path.toString());
         fxmlLoader.setLocation(path);
         scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.setTitle("OctaFake");
-        stage.show();
-         */
-
         /*
          * Second way
          */
         //scene = new Scene(loadFXML("filename"));
-        primaryStage.setTitle("Primary stage");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.setTitle("Sistema de Envio de Correos Masivos");
+        //this.scene = new Scene(loadFXML("Login"));
+        primaryStage.setScene(this.scene);
         primaryStage.show();
     }
 
@@ -64,6 +51,7 @@ public class App extends Application {
      * @throws IOException
      */
     private static Parent loadFXML(String fxml) throws IOException {
+        System.out.println(App.class.getResource( fxml + ".fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         System.out.println("loading fxml " + fxmlLoader.toString());
         return fxmlLoader.load();
