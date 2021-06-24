@@ -29,9 +29,8 @@ public class App extends Application {
         System.out.println(path.toString());
         fxmlLoader.setLocation(path);
         scene = new Scene(fxmlLoader.load());
-        //Icon
-        Image image = new Image("file:src/main/resources/images/upv-bis.png");
-        primaryStage.getIcons().add(image);
+        //System.out.println(loadFXML("Login"));
+        primaryStage.getIcons().add(IconImage.getIcon());
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
         primaryStage.setResizable(false);

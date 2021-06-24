@@ -1,2 +1,4 @@
+com\snorlax\LoginController.class
+com\snorlax\Alerts.class
 com\snorlax\App.class
-com\snorlax\App$1.class
+com\snorlax\ReadExcel.class
