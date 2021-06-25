@@ -25,11 +25,18 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL path = new URL("file:src/main/resources/com.snorlax/Login.fxml");
-        System.out.println(path.toString());
-        fxmlLoader.setLocation(path);
-        scene = new Scene(fxmlLoader.load());
+        //URL path = new URL("file:src/main/resources/com/Login.fxml");
+        //System.out.println(path.toString());
+        //fxmlLoader.setLocation(path);
+        scene = new Scene(loadFXML("Login"));
         //System.out.println(loadFXML("Login"));
+        System.out.println(App.class.getResource(""));
+        //System.out.println(App.class.getResource("Login.fxml"));
+        System.out.println(App.class.getResource("/"));
+        System.out.println(App.class.getClassLoader().getResource(""));
+        System.out.println(App.class.getClassLoader().getResource("/"));
+        System.out.println(App.class.getClassLoader().getResourceAsStream(""));
+        System.out.println(App.class.getClassLoader().getResourceAsStream("/"));
         primaryStage.getIcons().add(IconImage.getIcon());
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
@@ -49,6 +56,16 @@ public class App extends Application {
         System.out.println("loading fxml " + fxmlLoader.toString());
         return fxmlLoader.load();
     }
+
+    /**
+     * Sets the root Scene at the moment its needed
+     * @param fxml file name to be loaded
+     * @throws IOException if something goes wrong
+     */
+    static void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
+    }
+
     @Override
     public void stop() {
         System.out.println("Doing what has to be done before closing");

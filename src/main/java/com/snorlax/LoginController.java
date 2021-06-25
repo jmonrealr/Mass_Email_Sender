@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import javax.mail.*;
+import java.io.IOException;
 import java.util.Properties;
 
 public class LoginController {
@@ -36,12 +37,15 @@ public class LoginController {
             try {
                 Transport transport = session.getTransport("smtp");
                 transport.connect(email, password);
+                App.setRoot("exampleDynamicCss");
             } catch (AuthenticationFailedException failedException) {
                 Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error Log In", failedException.getMessage());
             } catch (NoSuchProviderException noSuchProviderException) {
                 noSuchProviderException.printStackTrace();
             } catch (MessagingException messagingException) {
                 messagingException.printStackTrace();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
 
 
