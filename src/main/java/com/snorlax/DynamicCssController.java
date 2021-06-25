@@ -5,6 +5,9 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * Controller who controls the dynamic css color properties
+ */
 public class DynamicCssController {
     @FXML
     public AnchorPane anchorPane;

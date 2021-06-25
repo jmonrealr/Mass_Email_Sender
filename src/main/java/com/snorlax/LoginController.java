@@ -10,6 +10,9 @@ import javax.mail.*;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Class who controls the Login with Gmail credentials
+ */
 public class LoginController {
     @FXML
     private PasswordField pfPassword;

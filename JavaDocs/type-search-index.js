@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.snorlax","l":"App"},{"p":"com.snorlax","l":"AppTest"}]
+typeSearchIndex = [{"p":"com.snorlax","l":"Alerts"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.snorlax","l":"App"},{"p":"com.snorlax","l":"Configuration"},{"p":"com.snorlax","l":"ConvertToPDF"},{"p":"com.snorlax","l":"DynamicCssController"},{"p":"com.snorlax","l":"IconImage"},{"p":"com.snorlax","l":"LoginController"},{"p":"com.snorlax","l":"ReadExcel"}]

@@ -7,7 +7,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
- * Class who read
+ * Class used to read a Excel File
  */
 public class ReadExcel {
     private String path;

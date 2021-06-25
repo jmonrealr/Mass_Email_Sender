@@ -1,10 +1,13 @@
 package com.snorlax;
 import javafx.scene.control.Alert;
 
+/**
+ * This class used to show some information to the user with generic javafx.scene.control.Alert
+ */
 public class Alerts {
     /**
      * Create an alert as needed
-     * @param alertType Type of alert {Error, Warning, Info, Confirmation, Warning}
+     * @param alertType Type of alert {Error, Warning, Info, Confirmation}
      * @param title of the alert
      * @param message of the alert
      */

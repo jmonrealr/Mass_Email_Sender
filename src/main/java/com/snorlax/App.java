@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
+ * Start driver of the APP
  * @author Snorlax Squad
  * @version 1.0
  */
