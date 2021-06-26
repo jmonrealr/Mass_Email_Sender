@@ -32,7 +32,7 @@ public class ReadExcel {
      * @return An LinkedHashMap with Column Name as Key and Values as the List of all the cell
      * @throws IOException When reading the file, something goes wrong
      */
-    public LinkedHashMap<String, List<String>> getData() throws IOException {
+    public LinkedHashMap<String, List<String>> getDataAsLHM() throws IOException {
         LinkedHashMap<String, List<String>> map = new LinkedHashMap<>();
         File file = new File(this.path);
         try {
@@ -66,5 +66,41 @@ public class ReadExcel {
             throw new IOException("File damaged" + e.getMessage());
         }
         return map;
+    }
+
+    public List<List<String>> getDataAsList(){
+        List<List<String>> excelContent = new ArrayList();
+        int columnCounter = 0;
+        int rowCounter = 0;
+
+        try (InputStream inputStream = new FileInputStream(this.path)) {
+            DataFormatter formatter = new DataFormatter();
+
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                List<String> tempList = new ArrayList();
+
+                for (Cell cell : row) {
+                    String text = formatter.formatCellValue(cell);
+                    System.out.print(++columnCounter + ": " + text + " - ");
+                    System.out.println(text.length());
+                    tempList.add(text.length() == 0 ? "" : text);
+                }
+                columnCounter = 0;
+                excelContent.add(tempList);
+
+                ++rowCounter;
+                if (rowCounter == 5) {
+                    break;
+                }
+            }
+        }
+        catch (IOException | EncryptedDocumentException ex) {
+            System.out.println(ex.toString());
+        }
+
+        return excelContent;
     }
 }
