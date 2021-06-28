@@ -1,4 +1,4 @@
-package com.AlcoM0312;
+package com.snorlax;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;

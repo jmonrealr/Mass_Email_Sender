@@ -1,7 +1,8 @@
-package com.AlcoM0312;
+package com.snorlax;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class INTERFAZ {
             ArrayList<String>fileRoute = new ArrayList<>();
             ArrayList<String> fileName = new ArrayList<>();
 
-    public void formulario(){
+    public void formulario() throws IOException {
         ArrayList<String> destinatarios = new ArrayList<>();
         Scanner leer = new Scanner(System.in);
 
@@ -22,16 +23,26 @@ public class INTERFAZ {
         clave=leer.nextLine();
 
         int x=0;
-        do {
-            System.out.println("Ingrese el correo de destino");
-            destino = leer.nextLine();
-            destinatarios.add(destino);
-            System.out.println("Si desea  dejar de ingresar destinatarios ingrese un -1");
-            x= leer.nextInt();
+        System.out.println("Ingresar destinatarios por excel 1, manualmente 2");
+        int op=leer.nextInt();
+        if(op==2)
+            do {
+                System.out.println("Ingrese el correo de destino");
+                destino = leer.nextLine();
+                destinatarios.add(destino);
+                System.out.println("Si desea  dejar deingresar otro correo\n ingrese un -1");
+                x= leer.nextInt();
+            }while(x!=-1);
+        else
+        {
+            leer.nextLine();
+            System.out.println("Ingrese el nombre del archivo xls");
+            String arch=leer.nextLine();
+            DestinatariosExcel a=new DestinatariosExcel();
+            destinatarios=a.abrirContactos(arch);
 
-        }while(x!=-1);
+        }
 
-        asunto=leer.nextLine();
         System.out.println("Ingrese el asunto del correo");
         asunto=leer.nextLine();
         System.out.println("Ingrese el cuerpo del correo");
