@@ -36,17 +36,20 @@ public class LoginController {
                     return new PasswordAuthentication(email, password);
                 }
             };
-            Session session = Session.getInstance(props, auth);
             try {
+                Session session = Session.getInstance(props, auth);
                 Transport transport = session.getTransport("smtp");
                 transport.connect(email, password);
-                App.setRoot("exampleDynamicCss");
+                //App.setRoot("exampleDynamicCss");
+                App.setRoot("index");
             } catch (AuthenticationFailedException failedException) {
                 Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error Log In", failedException.getMessage());
             } catch (NoSuchProviderException noSuchProviderException) {
                 noSuchProviderException.printStackTrace();
             } catch (MessagingException messagingException) {
                 messagingException.printStackTrace();
+            } catch (NoClassDefFoundError error){
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Class not found!!", error.toString());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

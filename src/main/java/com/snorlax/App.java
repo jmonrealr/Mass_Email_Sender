@@ -41,7 +41,6 @@ public class App extends Application {
         primaryStage.getIcons().add(IconImage.getIcon());
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
-        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
