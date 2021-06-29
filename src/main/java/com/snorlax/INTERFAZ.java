@@ -1,7 +1,5 @@
 package com.snorlax;
 
-import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -62,7 +60,7 @@ public class INTERFAZ {
             fileRoute=null;
         }
 
-        MENSAJERO a = new MENSAJERO(remitente,clave,destinatarios,asunto,contenido,fileName,fileRoute);
+        EmailSenderService a = new EmailSenderService(remitente,clave,destinatarios,asunto,contenido,fileName,fileRoute);
         a.Enviar();
 
     }

@@ -10,7 +10,10 @@ import javax.mail.internet.MimeMultipart;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class MENSAJERO {
+/**
+ * Service to send Email with SMTP
+ */
+public class EmailSenderService {
 
     private String remitente="", clave="", destino="", asunto = "", contenido = "";
 
@@ -18,7 +21,7 @@ public class MENSAJERO {
     ArrayList<String> fileRoute = new ArrayList<>();
     ArrayList<String> fileName = new ArrayList<>();
 
-    public MENSAJERO (String user, String pass, ArrayList des, String asu, String content, ArrayList fileR, ArrayList fileN  ){
+    public EmailSenderService(String user, String pass, ArrayList des, String asu, String content, ArrayList fileR, ArrayList fileN  ){
         remitente=user;
         clave=pass;
         destinatarios=des;

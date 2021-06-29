@@ -92,9 +92,6 @@ public class ReadExcel {
                 excelContent.add(tempList);
 
                 ++rowCounter;
-                if (rowCounter == 5) {
-                    break;
-                }
             }
         }
         catch (IOException | EncryptedDocumentException ex) {

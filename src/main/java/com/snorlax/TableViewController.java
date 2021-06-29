@@ -36,5 +36,6 @@ public class TableViewController {
             );
             tableView.getColumns().add(column);
         }
+        this.tableView = tableView;
     }
 }
