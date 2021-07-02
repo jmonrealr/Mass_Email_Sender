@@ -117,9 +117,16 @@ public class Controller {
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(IconImage.getIcon());
         Optional<String> result = dialog.showAndWait();
+        String key = "", value = "";
         if (result.isPresent()){
-            String key = result.get();
-            String value = Config.getProperty(key);
+            key = result.get();
+            value = Config.getProperty(key);
+            System.out.println("Key " + key);
+            System.out.println("Value " + value);
+            dialog.hide();
+            dialog.close();
+        }
+        if (!key.isBlank() || !value.isBlank()){
             TextInputDialog inputDialog = new TextInputDialog(value);
             inputDialog.setTitle("Enter a value");
             inputDialog.setHeaderText("Please fill the input");

@@ -15,16 +15,14 @@ import java.util.stream.Collectors;
  */
 public class Config {
     private static Properties defaultProps = new Properties();
-
     /**
      * Loads the configuration and made available to all class of the app
      */
     static {
-        try (FileInputStream in = new FileInputStream("configuration.properties")) {
-            System.out.println("Config" + in.toString());
+        try (FileInputStream in = new FileInputStream(Config.class.getResource("../../config/configuration.properties").getPath())) {
             defaultProps.load(in);
         } catch (IOException e) {
-            Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error in Config", "Something is wrong with the configuration properties, please check\n!" +  e.getMessage());
+            Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error in Config", "Something is wrong with the configuration properties, please check! \n" +  e.getMessage());
         }
     }
     /**

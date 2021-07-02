@@ -38,6 +38,7 @@ public class App extends Application {
         System.out.println(App.class.getClassLoader().getResource("/"));
         System.out.println(App.class.getClassLoader().getResourceAsStream(""));
         System.out.println(App.class.getClassLoader().getResourceAsStream("/"));
+        new Config();
         primaryStage.getIcons().add(IconImage.getIcon());
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
