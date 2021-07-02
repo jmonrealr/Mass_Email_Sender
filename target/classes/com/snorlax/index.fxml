@@ -40,24 +40,15 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snorlax.Controller">
+<VBox fx:id="vbox" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snorlax.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+            <MenuItem id="preferences" fx:id="preferences" mnemonicParsing="false" onAction="#configuration" text="Preferences…" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem id="exit" fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Exit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
@@ -141,11 +132,11 @@
             <Label fx:id="lbl_message" layoutX="12.0" layoutY="220.0" text="Message:" />
             <TextField fx:id="emailSubjectField" layoutX="85.0" layoutY="166.0" prefHeight="24.0" prefWidth="187.0" promptText="Food?" style="-fx-background-color: Transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
             <TextArea fx:id="emailMessageField" layoutX="85.0" layoutY="220.0" prefHeight="175.0" prefWidth="305.0" style="-fx-border-color: #0598ff;" wrapText="true" />
-            <Button fx:id="sendEmailButton" layoutX="313.0" layoutY="456.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90; -fx-border-radius: 90;" text="Send" textFill="WHITE" />
+            <Button fx:id="sendEmailButton" layoutX="313.0" layoutY="456.0" mnemonicParsing="false" onAction="#send" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90; -fx-border-radius: 90;" text="Send" textFill="WHITE" />
             <Label fx:id="sentBoolValue" layoutX="204.0" layoutY="399.0" text="Message sent!" visible="false" />
-            <Button fx:id="emailInsertFileButton" layoutX="84.0" layoutY="403.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert file" textFill="WHITE" />
-            <Button fx:id="emailInsertImageButton" layoutX="167.0" layoutY="403.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="102.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html" textFill="WHITE" />
-            <Button fx:id="toPDF" layoutX="272.0" layoutY="403.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="118.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html to PDF" textFill="WHITE" />
+            <Button fx:id="emailInsertFileButton" layoutX="84.0" layoutY="403.0" mnemonicParsing="false" onAction="#attachFile" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert file" textFill="WHITE" />
+            <Button fx:id="emailInsertImageButton" layoutX="167.0" layoutY="403.0" mnemonicParsing="false" onAction="#insertHtml" prefHeight="24.0" prefWidth="102.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html" textFill="WHITE" />
+            <Button fx:id="toPDF" layoutX="272.0" layoutY="403.0" mnemonicParsing="false" onAction="#htmlToPdf" prefHeight="24.0" prefWidth="118.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html to PDF" textFill="WHITE" />
             <MenuBar prefHeight="32.0" prefWidth="408.0" style="-fx-background-color: #57838D;">
               <menus>
                 <Menu mnemonicParsing="false" text="Preferences">

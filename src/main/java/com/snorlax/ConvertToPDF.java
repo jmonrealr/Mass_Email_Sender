@@ -18,7 +18,7 @@ public class ConvertToPDF {
         try {
             HtmlConverter.convertToPdf(new FileInputStream(archivo.getAbsolutePath()), new FileOutputStream("src/main/resources/Salida.pdf")); //reemplazar por el nombre del archivo de salida
         }catch(Exception ex){
-                ex.printStackTrace();
+            ex.printStackTrace();
         }
     }
 }
