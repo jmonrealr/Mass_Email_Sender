@@ -1,5 +1,6 @@
 package com.snorlax;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 /**
  * This class used to show some information to the user with generic javafx.scene.control.Alert
@@ -16,6 +17,8 @@ public class Alerts {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(IconImage.getIcon());
         alert.show();
     }
 
