@@ -25,20 +25,7 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        //URL path = new URL("file:src/main/resources/com/Login.fxml");
-        //System.out.println(path.toString());
-        //fxmlLoader.setLocation(path);
         scene = new Scene(loadFXML("Login"));
-        //System.out.println(loadFXML("Login"));
-        System.out.println(App.class.getResource(""));
-        //System.out.println(App.class.getResource("Login.fxml"));
-        System.out.println(App.class.getResource("/"));
-        System.out.println(App.class.getClassLoader().getResource(""));
-        System.out.println(App.class.getClassLoader().getResource("/"));
-        System.out.println(App.class.getClassLoader().getResourceAsStream(""));
-        System.out.println(App.class.getClassLoader().getResourceAsStream("/"));
-        new Config();
         primaryStage.getIcons().add(IconImage.getIcon());
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
@@ -52,9 +39,9 @@ public class App extends Application {
      * @throws IOException when the file is not founded
      */
     private static Parent loadFXML(String fxml) throws IOException {
-        System.out.println(App.class.getResource( fxml + ".fxml"));
+        //System.out.println(App.class.getResource( fxml + ".fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        System.out.println("loading fxml " + fxmlLoader.toString());
+        //System.out.println("loading fxml " + fxmlLoader.toString());
         return fxmlLoader.load();
     }
 

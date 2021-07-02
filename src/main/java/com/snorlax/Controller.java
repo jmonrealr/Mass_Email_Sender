@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.mail.Session;
+import javax.mail.Transport;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +46,10 @@ public class Controller {
     @FXML
     private Button toPDF;
 
+    private Session session;
     private List<File> files;
+    private Transport transport;
+
     /**
      * Sending email button
      * @param actionEvent When the button is clicked
@@ -69,7 +74,7 @@ public class Controller {
         fileChooser.setTitle("Attach File");
         Stage stage = (Stage) vbox.getScene().getWindow();
         List<File> list = fileChooser.showOpenMultipleDialog(stage);
-        if (!list.isEmpty()){
+        if (list != null){
             for (File file : list){
                 System.out.println(file.toString());
             }
@@ -110,7 +115,7 @@ public class Controller {
      * @param actionEvent when MenuItem Preferences is pressed
      */
     public void configuration(ActionEvent actionEvent) {
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("",Config.getProperties());
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("",Config.getPropertiesName());
         dialog.setTitle("Choice a property");
         dialog.setHeaderText("Look at the properties");
         dialog.setContentText("Choose your property");
@@ -140,5 +145,13 @@ public class Controller {
             }
         }
 
+    }
+
+    public void setTransport(Transport transport){
+        this.transport = transport;
+    }
+
+    public void setSesion(Session session){
+        this.session = session;
     }
 }

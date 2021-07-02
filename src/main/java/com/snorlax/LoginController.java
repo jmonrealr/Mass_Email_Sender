@@ -2,9 +2,14 @@ package com.snorlax;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import javax.mail.*;
 import java.io.IOException;
@@ -18,6 +23,9 @@ public class LoginController {
     private PasswordField pfPassword;
     @FXML
     private TextField tfEmail;
+    private Parent root;
+    private Scene scene;
+    private Stage stage;
 
     @FXML
     protected void submitClicked(ActionEvent e) {
@@ -26,10 +34,10 @@ public class LoginController {
         String email = tfEmail.getText();
         if (!password.isBlank() && !email.isBlank()){
             Properties props = new Properties();
-            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
-            props.put("mail.smtp.port", "587"); //TLS Port
-            props.put("mail.smtp.auth", "true"); //enable authentication
-            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+            props.put("mail.smtp.host", Config.getProperty("mail.smtp.host")); //SMTP Host
+            props.put("mail.smtp.port", Config.getProperty("mail.smtp.port")); //TLS Port
+            props.put("mail.smtp.auth", Config.getProperty("mail.smtp.auth")); //enable authentication
+            props.put("mail.smtp.starttls.enable", Config.getProperty("mail.smtp.starttls.enable")); //enable STARTTLS
             Authenticator auth = new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -40,8 +48,14 @@ public class LoginController {
                 Session session = Session.getInstance(props, auth);
                 Transport transport = session.getTransport("smtp");
                 transport.connect(email, password);
-                //App.setRoot("exampleDynamicCss");
-                App.setRoot("index");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
+                root  = loader.load();
+                Controller controller = loader.getController();
+                controller.setTransport(transport);
+                stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
             } catch (AuthenticationFailedException failedException) {
                 Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error Log In", failedException.getMessage());
             } catch (NoSuchProviderException noSuchProviderException) {
@@ -53,8 +67,6 @@ public class LoginController {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-
-
         }else{
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error Log In", "Password or email are empty");
         }

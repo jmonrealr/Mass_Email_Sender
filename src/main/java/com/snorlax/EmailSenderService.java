@@ -29,9 +29,6 @@ public class EmailSenderService {
         contenido=content;
         fileRoute=fileR;
         fileName=fileN;
-
-
-
     }
 
     public void Enviar () {
