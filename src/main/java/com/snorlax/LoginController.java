@@ -65,7 +65,7 @@ public class LoginController {
             } catch (NoClassDefFoundError error){
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Class not found!!", error.toString());
             } catch (IOException ioException) {
-                ioException.printStackTrace();
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "An I/O exception has occurred", "Exception produced by failed or interrupted I/O operations" + ioException.getMessage());
             }
         }else{
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error Log In", "Password or email are empty");

@@ -147,10 +147,18 @@ public class Controller {
 
     }
 
+    /**
+     * Sets the transport object to be used when sending messages
+     * @param transport with the session via smtp protocol
+     */
     public void setTransport(Transport transport){
         this.transport = transport;
     }
 
+    /**
+     * Sets the session used in Transport
+     * @param session with the properties and authenticator
+     */
     public void setSesion(Session session){
         this.session = session;
     }
