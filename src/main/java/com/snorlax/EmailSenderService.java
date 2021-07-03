@@ -33,7 +33,7 @@ public class EmailSenderService {
     /**
      * Constructor of the class who handled one destination
      * @param transport to be used to send the message
-     * @param session
+     * @param session with authentication properties
      * @param subject of the e-mail
      * @param send e-mail address who receive the message
      * @param message or body of the e-mail
