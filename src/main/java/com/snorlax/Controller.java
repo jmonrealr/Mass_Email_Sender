@@ -7,9 +7,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +51,7 @@ public class Controller {
     private Session session;
     private List<File> files;
     private Transport transport;
+    private ArrayList<String> send = new ArrayList<>();
 
     /**
      * Sending email button
@@ -61,7 +64,20 @@ public class Controller {
         if (subject.isBlank() || sent.isBlank() || message.isBlank()){
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Missing information", "Some Fields are empty");
         }else{
-
+            String str[];
+            if (sent.contains(",")){
+                str = sent.split(",");
+                for (String email: str) {
+                    this.send.add(email);
+                }
+            }
+            //EmailSenderService email = new EmailSenderService(this.transport,this.session, subject, sent, message, files);
+            EmailSenderService email2 = new EmailSenderService(this.transport,this.session, subject, this.send, message, files);
+            try {
+                email2.sendMessage();
+            } catch (MessagingException e) {
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message! " + e.getMessage());
+            }
         }
     }
 
@@ -148,18 +164,13 @@ public class Controller {
     }
 
     /**
-     * Sets the transport object to be used when sending messages
+     * Sets the transport and session object to be used when sending messages
      * @param transport with the session via smtp protocol
-     */
-    public void setTransport(Transport transport){
-        this.transport = transport;
-    }
-
-    /**
-     * Sets the session used in Transport
      * @param session with the properties and authenticator
      */
-    public void setSesion(Session session){
+    public void setTransport(Transport transport, Session session){
+        this.transport = transport;
         this.session = session;
     }
+
 }

@@ -51,7 +51,7 @@ public class LoginController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
                 root  = loader.load();
                 Controller controller = loader.getController();
-                controller.setTransport(transport);
+                controller.setTransport(transport, session);
                 stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);

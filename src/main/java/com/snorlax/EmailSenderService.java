@@ -7,7 +7,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -15,21 +17,70 @@ import java.util.Properties;
  */
 public class EmailSenderService {
 
+    private String subject;
+    private ArrayList<String> send;
+    private Session session;
+    private String body;
+    private List<File> files;
+    private Transport transport;
+    private MimeMessage message;
     private String remitente="", clave="", destino="", asunto = "", contenido = "";
 
     ArrayList<String> destinatarios = new ArrayList<>();
     ArrayList<String> fileRoute = new ArrayList<>();
     ArrayList<String> fileName = new ArrayList<>();
 
-    public EmailSenderService(String user, String pass, ArrayList des, String asu, String content, ArrayList fileR, ArrayList fileN  ){
-        remitente=user;
-        clave=pass;
-        destinatarios=des;
-        asunto=asu;
-        contenido=content;
-        fileRoute=fileR;
-        fileName=fileN;
+    /**
+     * Constructor of the class who handled one destination
+     * @param transport to be used to send the message
+     * @param session
+     * @param subject of the e-mail
+     * @param send e-mail address who receive the message
+     * @param message or body of the e-mail
+     * @param files who be attached to the message
+     */
+    public EmailSenderService(Transport transport, Session session, String subject, String send, String message, List<File> files) {
+        // To do...
     }
+
+    /**
+     * Constructor of the class who handled multiple destinations
+     * @param transport to be used to send the message
+     * @param session with authentication properties
+     * @param subject of the e-mail
+     * @param send e-mail address who receive the message
+     * @param body or message of the e-mail
+     * @param files who be attached to the message
+     */
+    public EmailSenderService(Transport transport, Session session, String subject, ArrayList<String> send, String body, List<File> files) {
+        this.transport = transport;
+        this.session = session;
+        this.subject = subject;
+        this.send = send;
+        this.body = body;
+        this.files = files;
+        this.message = new MimeMessage(session);
+    }
+
+    public void sendMessage() throws MessagingException {
+        for (String email: this.send) {
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        }
+        this.message.setSubject(this.subject);
+        BodyPart part = new MimeBodyPart();
+        //part.setContent(this.body);
+        part.setContent(this.body,"text/hmtl");
+        Multipart multipart = new MimeMultipart();
+        for (File file: this.files) {
+            part.setDataHandler(new DataHandler(new FileDataSource(file.getPath())));
+            part.setFileName(file.getName());
+            multipart.addBodyPart(part);
+        }
+        this.message.setContent(multipart);
+        this.transport.sendMessage(this.message, this.message.getAllRecipients());
+    }
+
+
 
     public void Enviar () {
 
