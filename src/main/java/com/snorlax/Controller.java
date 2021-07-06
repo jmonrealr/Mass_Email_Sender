@@ -49,7 +49,7 @@ public class Controller {
     private Button toPDF;
 
     private Session session;
-    private List<File> files;
+    private List<File> files = new ArrayList<>();
     private Transport transport;
     private ArrayList<String> send = new ArrayList<>();
 
@@ -70,13 +70,30 @@ public class Controller {
                 for (String email: str) {
                     this.send.add(email);
                 }
+            }else{
+                this.send.add(sent);
             }
             //EmailSenderService email = new EmailSenderService(this.transport,this.session, subject, sent, message, files);
+            //System.out.println(files.toString());
+            if (files == null || files.isEmpty()){
+                files = null;
+                System.out.println("Files empty");
+            }
             EmailSenderService email2 = new EmailSenderService(this.transport,this.session, subject, this.send, message, files);
             try {
                 email2.sendMessage();
-            } catch (MessagingException e) {
-                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message! " + e.getMessage());
+                Thread.sleep(1000);
+                this.emailSubjectField.setText("");
+                this.emailToField.setText("");
+                this.emailMessageField.setText("");
+                //System.out.println(files);
+                if (files != null){
+
+                }
+                this.send.clear();
+                Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
+            } catch (MessagingException | InterruptedException e) {
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message! \n" + e.getMessage());
             }
         }
     }

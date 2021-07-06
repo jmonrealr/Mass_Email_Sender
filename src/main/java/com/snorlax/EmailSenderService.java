@@ -8,6 +8,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -21,7 +22,7 @@ public class EmailSenderService {
     private ArrayList<String> send;
     private Session session;
     private String body;
-    private List<File> files;
+    private List<File> files = null;
     private Transport transport;
     private MimeMessage message;
     private String remitente="", clave="", destino="", asunto = "", contenido = "";
@@ -62,69 +63,31 @@ public class EmailSenderService {
         this.message = new MimeMessage(session);
     }
 
-    public void sendMessage() throws MessagingException {
+    public void sendMessage() throws MessagingException, NullPointerException {
         for (String email: this.send) {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
         }
         this.message.setSubject(this.subject);
         BodyPart part = new MimeBodyPart();
-        //part.setContent(this.body);
-        part.setContent(this.body,"text/hmtl");
-        Multipart multipart = new MimeMultipart();
-        for (File file: this.files) {
-            part.setDataHandler(new DataHandler(new FileDataSource(file.getPath())));
-            part.setFileName(file.getName());
-            multipart.addBodyPart(part);
+        //part.setContent(this.body)
+        System.out.println("Body " + body);
+        part.setContent(this.body,"text/html");
+        System.out.println(part.toString());
+        //this.message.setText(this.body,"text/hmtl");
+        MimeMultipart multipart = new MimeMultipart();
+        multipart.addBodyPart(part);
+        if (files != null){
+            System.out.println("Files");
+            for (File file: this.files) {
+                BodyPart files = new MimeBodyPart();
+                files.setDataHandler(new DataHandler(new FileDataSource(file.getPath())));
+                files.setFileName(file.getName());
+                multipart.addBodyPart(files);
+            }
         }
+        this.message.setText(this.body, "text/html");
+        //System.out.println(this.message.toString());
         this.message.setContent(multipart);
         this.transport.sendMessage(this.message, this.message.getAllRecipients());
     }
-
-
-
-    public void Enviar () {
-
-
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.user", remitente);
-        props.put("mail.smtp.clave", clave);
-
-        Session session = Session.getDefaultInstance(props);
-        MimeMessage mensaje = new MimeMessage(session);
-
-        try{
-            for(int i=0; i<destinatarios.size(); i++) {
-                mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatarios.get(i)));
-            }
-            mensaje.setSubject(asunto);
-
-            BodyPart parte_Tex = new MimeBodyPart();
-            parte_Tex.setContent(contenido, "text/html");
-
-            MimeMultipart todas = new MimeMultipart();
-            todas.addBodyPart(parte_Tex);
-
-            if(fileName != null && fileRoute != null) {
-                BodyPart parte_File = new MimeBodyPart();
-                parte_File.setDataHandler(new DataHandler(new FileDataSource(fileRoute.get(0))));
-                parte_File.setFileName(fileName.get(0));
-                todas.addBodyPart(parte_File);
-            }
-
-            mensaje.setContent(todas);
-            Transport transport = session.getTransport("smtp");
-            transport.connect("smtp.gmail.com", remitente, clave);
-            transport.sendMessage(mensaje, mensaje.getAllRecipients());
-            transport.close();
-            System.out.println("Se envio el mensjae...\n\n\n\n ¿o no?");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
 }
