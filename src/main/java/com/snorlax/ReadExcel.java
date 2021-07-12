@@ -11,12 +11,13 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public class ReadExcel {
     private String path;
-
+    private File file;
     /**
-     * Constructor of the class with default values
+     * Constructor of the class which takes the
+     * @param file to be read
      */
-    ReadExcel(){
-        this.path = "Default path";
+    ReadExcel(File file){
+        this.file = file;
     }
 
     /**
@@ -34,6 +35,9 @@ public class ReadExcel {
      */
     public LinkedHashMap<String, List<String>> getDataAsLHM() throws IOException {
         LinkedHashMap<String, List<String>> map = new LinkedHashMap<>();
+        if (this.file != null){
+
+        }
         File file = new File(this.path);
         try {
             InputStream inputStream = new FileInputStream(file);

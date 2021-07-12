@@ -48,7 +48,7 @@ public class Config {
                 PropertiesConfiguration config = new PropertiesConfiguration();
                 PropertiesConfigurationLayout layout = new PropertiesConfigurationLayout();
                 config.setLayout(layout);
-                layout.load(config, new FileReader("/src/main/java/resources/config/configuration.properties"));
+                layout.load(config, new FileReader("../../config/configuration.properties"));
                 config.setProperty(key, newValue);
                 StringWriter stringWriter = new StringWriter();
                 layout.save(config, stringWriter);

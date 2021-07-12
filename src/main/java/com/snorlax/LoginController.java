@@ -29,7 +29,6 @@ public class LoginController {
 
     @FXML
     protected void submitClicked(ActionEvent e) {
-        System.out.println("SubmitClicked");
         String password = pfPassword.getText();
         String email = tfEmail.getText();
         if (!password.isBlank() && !email.isBlank()){
@@ -57,13 +56,13 @@ public class LoginController {
                 stage.setScene(scene);
                 stage.show();
             } catch (AuthenticationFailedException failedException) {
-                Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error Log In", failedException.getMessage());
+                Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error" , "Authentication Failed\n" + failedException.getMessage());
             } catch (NoSuchProviderException noSuchProviderException) {
-                noSuchProviderException.printStackTrace();
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", noSuchProviderException.getMessage());
             } catch (MessagingException messagingException) {
-                messagingException.printStackTrace();
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", "Error sending the message\n" + messagingException.getMessage());
             } catch (NoClassDefFoundError error){
-                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Class not found!!", error.toString());
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Class not found!!", error.getMessage());
             } catch (IOException ioException) {
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "An I/O exception has occurred", "Exception produced by failed or interrupted I/O operations" + ioException.getMessage());
             }

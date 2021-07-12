@@ -1,8 +1,7 @@
-com\snorlax\Configuration.class
 com\snorlax\LoginController.class
 com\snorlax\Controller.class
 com\snorlax\ConvertToPDF.class
-com\snorlax\INTERFAZ.class
+com\snorlax\Config.class
 com\snorlax\ReadExcel.class
 com\snorlax\DynamicCssController.class
 com\snorlax\Alerts.class

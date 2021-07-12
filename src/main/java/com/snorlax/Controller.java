@@ -11,7 +11,9 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,20 @@ import java.util.Optional;
  * This is the MainController for the whole App
  */
 public class Controller {
+    @FXML
+    private MenuItem logout;
+    @FXML
+    private MenuItem changeIcon;
+    @FXML
+    private MenuItem changeColors;
+    @FXML
+    private Button loadExcel;
+    @FXML
+    private MenuItem loadConfig;
+    @FXML
+    private MenuItem properties;
+    @FXML
+    private TextArea htmlCode;
     @FXML
     private MenuItem preferences;
     @FXML
@@ -45,13 +61,13 @@ public class Controller {
     private Button emailInsertFileButton;
     @FXML
     private Button emailInsertImageButton;
-    @FXML
-    private Button toPDF;
 
     private Session session;
     private List<File> files = new ArrayList<>();
     private Transport transport;
     private ArrayList<String> send = new ArrayList<>();
+    private LinkedHashMap<String, List<String>> dataExcel;
+    private boolean flag = false;
 
     /**
      * Sending email button
@@ -61,6 +77,7 @@ public class Controller {
         String subject = this.emailSubjectField.getText();
         String sent = this.emailToField.getText();
         String message = this.emailMessageField.getText();
+        String code = this.htmlCode.getText();
         if (subject.isBlank() || sent.isBlank() || message.isBlank()){
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Missing information", "Some Fields are empty");
         }else{
@@ -87,19 +104,16 @@ public class Controller {
                 this.emailToField.setText("");
                 this.emailMessageField.setText("");
                 //System.out.println(files);
-                if (files != null){
-
+                if (this.files != null){
+                    this.files.clear();
                 }
                 this.send.clear();
+                this.htmlCode.clear();
                 Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
             } catch (MessagingException | InterruptedException e) {
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message! \n" + e.getMessage());
             }
         }
-    }
-
-    public void htmlToPdf(ActionEvent actionEvent) {
-        
     }
 
     public void attachFile(ActionEvent actionEvent) {
@@ -129,11 +143,11 @@ public class Controller {
                 "</body>\n",
                 "</html>\n"
         };
-        String message = this.emailMessageField.getText();
+        String message = this.htmlCode.getText();
         for (String word: template) {
             message += word;
         }
-        this.emailMessageField.setText(message);
+        this.htmlCode.setText(message);
     }
 
     /**
@@ -190,4 +204,51 @@ public class Controller {
         this.session = session;
     }
 
+    public void changeColors(ActionEvent actionEvent) {
+    }
+
+    public void changeIcon(ActionEvent actionEvent) {
+    }
+
+    public void loadConfig(ActionEvent actionEvent) {
+    }
+
+    /**
+     *
+     * @param actionEvent
+     */
+    public void logout(ActionEvent actionEvent) {
+        try {
+            this.session = null;
+            this.transport = null;
+            App.setRoot("login");
+        } catch (IOException e) {
+            Alerts.showAlertMessage(Alert.AlertType.ERROR,"Some error", "Error during logout \n" + e.getMessage());
+        }
+    }
+
+    public void showProps(ActionEvent actionEvent) {
+    }
+
+    public void loadExcel(ActionEvent actionEvent) {
+        this.flag = true;
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Attach File");
+        Stage stage = (Stage) vbox.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file == null){
+            return;
+        }else {
+            if (!file.isFile() || (!file.getName().endsWith(".xlsx") || !file.getName().endsWith("xls") )){
+                Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
+                return;
+            }
+            ReadExcel readExcel = new ReadExcel(file);
+            try {
+                this.dataExcel = readExcel.getDataAsLHM();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -46,33 +46,28 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem id="preferences" fx:id="preferences" mnemonicParsing="false" onAction="#configuration" text="Preferences…" />
+                  <Menu mnemonicParsing="false" text="Preferences">
+                    <items>
+                        <MenuItem id="properties" fx:id="properties" mnemonicParsing="false" onAction="#showProps" text="Properties" />
+                  <MenuItem id="preferences" fx:id="preferences" mnemonicParsing="false" onAction="#configuration" text="Change Properties" />
+                      <MenuItem fx:id="loadConfig" mnemonicParsing="false" onAction="#loadConfig" text="Load Properties File" />
+                    </items>
+                  </Menu>
             <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem id="logout" fx:id="logout" mnemonicParsing="false" onAction="#logout" text="Logout" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem id="exit" fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Exit" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="View">
           <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem id="changeColors" fx:id="changeColors" mnemonicParsing="false" onAction="#changeColors" text="Change colors" />
+                  <MenuItem fx:id="changeIcon" mnemonicParsing="false" onAction="#changeIcon" text="Change Icon" />
           </items>
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.37973273942093544, 0.5" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.37973273942093544, 0.5" focusTraversable="true" VBox.vgrow="ALWAYS">
       <items>
             <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #6165c2;">
                <children>
@@ -131,12 +126,11 @@
             <Label fx:id="lbl_subject" layoutX="14.0" layoutY="177.0" text="Subject:" />
             <Label fx:id="lbl_message" layoutX="12.0" layoutY="220.0" text="Message:" />
             <TextField fx:id="emailSubjectField" layoutX="85.0" layoutY="166.0" prefHeight="24.0" prefWidth="187.0" promptText="Food?" style="-fx-background-color: Transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-            <TextArea fx:id="emailMessageField" layoutX="85.0" layoutY="220.0" prefHeight="175.0" prefWidth="305.0" style="-fx-border-color: #0598ff;" wrapText="true" />
-            <Button fx:id="sendEmailButton" layoutX="313.0" layoutY="456.0" mnemonicParsing="false" onAction="#send" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90; -fx-border-radius: 90;" text="Send" textFill="WHITE" />
+            <Button fx:id="sendEmailButton" layoutX="314.0" layoutY="492.0" mnemonicParsing="false" onAction="#send" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90; -fx-border-radius: 90;" text="Send" textFill="WHITE" />
             <Label fx:id="sentBoolValue" layoutX="204.0" layoutY="399.0" text="Message sent!" visible="false" />
-            <Button fx:id="emailInsertFileButton" layoutX="84.0" layoutY="403.0" mnemonicParsing="false" onAction="#attachFile" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert file" textFill="WHITE" />
-            <Button fx:id="emailInsertImageButton" layoutX="167.0" layoutY="403.0" mnemonicParsing="false" onAction="#insertHtml" prefHeight="24.0" prefWidth="102.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html" textFill="WHITE" />
-            <Button fx:id="toPDF" layoutX="272.0" layoutY="403.0" mnemonicParsing="false" onAction="#htmlToPdf" prefHeight="24.0" prefWidth="118.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html to PDF" textFill="WHITE" />
+            <Button fx:id="emailInsertFileButton" layoutX="85.0" layoutY="428.0" mnemonicParsing="false" onAction="#attachFile" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Attach file" textFill="WHITE" />
+            <Button fx:id="emailInsertImageButton" layoutX="165.0" layoutY="428.0" mnemonicParsing="false" onAction="#insertHtml" prefHeight="24.0" prefWidth="102.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Insert html" textFill="WHITE" />
+            <Button id="loadExcel" fx:id="loadExcel" layoutX="269.0" layoutY="428.0" mnemonicParsing="false" onAction="#loadExcel" prefHeight="24.0" prefWidth="118.0" style="-fx-background-color: #0598ff; -fx-background-radius: 90;" text="Load Excel Table" textFill="WHITE" />
             <MenuBar prefHeight="32.0" prefWidth="408.0" style="-fx-background-color: #57838D;">
               <menus>
                 <Menu mnemonicParsing="false" text="Preferences">
@@ -164,11 +158,25 @@
             </ImageView>
             <FontAwesomeIconView fill="#0a9de1" glyphName="ENVELOPE" layoutX="280.0" layoutY="142.0" size="15" />
             <FontAwesomeIconView fill="#0a9de1" glyphName="ENVELOPE" layoutX="281.0" layoutY="193.0" size="15" />
+                  <TabPane layoutX="81.0" layoutY="208.0" prefHeight="200.0" prefWidth="305.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Message">
+                           <content>
+                        <TextArea fx:id="emailMessageField" prefHeight="175.0" prefWidth="305.0" style="-fx-border-color: #0598ff;" wrapText="true" />
+                           </content>
+                        </Tab>
+                      <Tab text="HTML editor">
+                           <content>
+                              <TextArea id="htmlCode" fx:id="htmlCode" prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
          </children>
       </AnchorPane>
         <ScrollPane prefHeight="551.0" prefWidth="223.0">
           <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="316.0">
+            <AnchorPane id="Content" prefHeight="545.0" prefWidth="316.0">
               <children>
                 <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="IF-Excel loaded" textAlignment="CENTER" wrapText="false">
                            <font>
@@ -185,7 +193,7 @@
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
+        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" HBox.hgrow="ALWAYS">
           <font>
             <Font size="11.0" fx:id="x3" />
           </font>
@@ -194,7 +202,7 @@
           </textFill>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
+        <Label font="$x3" maxWidth="-1.0" text="2021 Copyright All rights reserved" textFill="$x4" HBox.hgrow="NEVER" />
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
