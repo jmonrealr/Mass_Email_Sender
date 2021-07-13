@@ -1,12 +1,16 @@
 package com.snorlax;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -16,15 +20,19 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.net.URL;
+import java.util.*;
 
 /**
  * This is the MainController for the whole App
  */
-public class Controller {
+public class Controller implements Initializable {
+    @FXML
+    private TableColumn tableKeys;
+    @FXML
+    private TableView tableView;
+    @FXML
+    private AnchorPane anchorData;
     @FXML
     private MenuItem scheduleSend;
     @FXML
@@ -252,7 +260,13 @@ public class Controller {
     }
 
     public void showProps(ActionEvent actionEvent) {
-        //show all the props
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("",Config.getPropertiesName());
+        dialog.setTitle("Properties");
+        dialog.setHeaderText("You can see the properties");
+        dialog.setContentText("Property");
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(IconImage.getIcon());
+        Optional<String> result = dialog.showAndWait();
     }
 
     public void loadExcel(ActionEvent actionEvent) {
@@ -264,19 +278,33 @@ public class Controller {
         if (file == null){
             return;
         }else {
-            if (!file.isFile() || (!file.getName().endsWith(".xlsx") || !file.getName().endsWith("xls") )){
+            if (!file.isFile()){
+                System.out.println(file.toString());
                 Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
                 return;
             }
             ReadExcel readExcel = new ReadExcel(file);
             try {
                 this.dataExcel = readExcel.getDataAsLHM();
+                //ObservableList list = (ObservableList) this.dataExcel.keySet();
+                ObservableList list = FXCollections.observableArrayList(new ArrayList<>(this.dataExcel.keySet()));
+                //tableView.setItems((ObservableList)  new ArrayList<>(this.dataExcel.keySet()));
+                tableView.setItems(list);
+                tableView.setVisible(true);
+                tableKeys.setVisible(true);
+                anchorData.setVisible(true);
             } catch (IOException e) {
-                e.printStackTrace();
+                Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
             }
         }
     }
 
     public void scheduleSend(ActionEvent actionEvent) {
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        anchorData.setVisible(false);
+        tableView.setVisible(false);
     }
 }

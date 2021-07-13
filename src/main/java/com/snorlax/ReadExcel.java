@@ -35,10 +35,6 @@ public class ReadExcel {
      */
     public LinkedHashMap<String, List<String>> getDataAsLHM() throws IOException {
         LinkedHashMap<String, List<String>> map = new LinkedHashMap<>();
-        if (this.file != null){
-
-        }
-        File file = new File(this.path);
         try {
             InputStream inputStream = new FileInputStream(file);
             Workbook workbook = WorkbookFactory.create(inputStream);
@@ -57,7 +53,6 @@ public class ReadExcel {
                 }
                 if (flag) flag = false;
                 else{
-                    System.out.println(temp.toString());
                     for (int i = 0; i < names.size(); i++){
                         map.get((String) names.get(i)).add(temp.get(i));
                     }
