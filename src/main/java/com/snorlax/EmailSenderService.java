@@ -20,6 +20,7 @@ public class EmailSenderService {
 
     private String subject;
     private ArrayList<String> send;
+    private String sent;
     private Session session;
     private String body;
     private List<File> files = null;
@@ -36,12 +37,18 @@ public class EmailSenderService {
      * @param transport to be used to send the message
      * @param session with authentication properties
      * @param subject of the e-mail
-     * @param send e-mail address who receive the message
-     * @param message or body of the e-mail
+     * @param sent e-mail address who receive the message
+     * @param body or body of the e-mail
      * @param files who be attached to the message
      */
-    public EmailSenderService(Transport transport, Session session, String subject, String send, String message, List<File> files) {
-        // To do...
+    public EmailSenderService(Transport transport, Session session, String subject, String sent, String body, List<File> files) {
+        this.transport = transport;
+        this.session = session;
+        this.subject = subject;
+        this.sent = sent;
+        this.body = body;
+        this.files = files;
+        this.message = new MimeMessage(session);
     }
 
     /**

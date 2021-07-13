@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -30,6 +32,7 @@ public class App extends Application {
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(windowEvent -> exit(primaryStage));
     }
 
     /**
@@ -56,7 +59,7 @@ public class App extends Application {
 
     @Override
     public void stop() {
-        System.out.println("Doing what has to be done before closing");
+        //System.out.println("Doing what has to be done before closing");
     }
 
     /**
@@ -69,5 +72,21 @@ public class App extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /**
+     *  Exits the application
+     * @param stage used
+     */
+    private void exit(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("You're about to exit!");
+        alert.setContentText("Do you want to exit?");
+        Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage2.getIcons().add(IconImage.getIcon());
+        if (alert.showAndWait().get() == ButtonType.OK){
+            stage.close();
+        }
     }
 }

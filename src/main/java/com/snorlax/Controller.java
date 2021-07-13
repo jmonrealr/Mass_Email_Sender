@@ -2,6 +2,10 @@ package com.snorlax;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -21,6 +25,10 @@ import java.util.Optional;
  * This is the MainController for the whole App
  */
 public class Controller {
+    @FXML
+    private MenuItem scheduleSend;
+    @FXML
+    private SplitMenuButton sendMenu;
     @FXML
     private MenuItem logout;
     @FXML
@@ -62,6 +70,9 @@ public class Controller {
     @FXML
     private Button emailInsertImageButton;
 
+    private Parent root;
+    private Scene scene;
+    private Stage stage;
     private Session session;
     private List<File> files = new ArrayList<>();
     private Transport transport;
@@ -214,20 +225,34 @@ public class Controller {
     }
 
     /**
-     *
-     * @param actionEvent
+     *  Close the actual session and switch to Login Scene
+     * @param actionEvent when Logout is submitted
      */
     public void logout(ActionEvent actionEvent) {
-        try {
-            this.session = null;
-            this.transport = null;
-            App.setRoot("login");
-        } catch (IOException e) {
-            Alerts.showAlertMessage(Alert.AlertType.ERROR,"Some error", "Error during logout \n" + e.getMessage());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("D you want to logout?");
+        Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage2.getIcons().add(IconImage.getIcon());
+        if (alert.showAndWait().get() == ButtonType.OK){
+            try {
+                this.session = null;
+                this.transport = null;
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+                root  = loader.load();
+                stage = (Stage) vbox.getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "An I/O exception has occurred", "Exception produced by failed or interrupted I/O operations" + e.getMessage());
+            }
         }
     }
 
     public void showProps(ActionEvent actionEvent) {
+        //show all the props
     }
 
     public void loadExcel(ActionEvent actionEvent) {
@@ -250,5 +275,8 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void scheduleSend(ActionEvent actionEvent) {
     }
 }

@@ -33,6 +33,11 @@ public class Config {
     public static String getProperty(String key){
         return defaultProps.getProperty(key);
     }
+
+    /**
+     *  Gets all the properties name
+     * @return List with the properties names
+     */
     public static List<String> getPropertiesName(){
         return defaultProps.stringPropertyNames().stream().collect(Collectors.toList());
     }
