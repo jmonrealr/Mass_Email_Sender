@@ -2,19 +2,26 @@ package com.snorlax;
 
 import com.itextpdf.html2pdf.HtmlConverter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 
 /**
  * This class is used to converts an html input to PDF as attached file
  */
 public class ConvertToPDF {
+
+    public String convert(String html) throws IOException {
+        HtmlConverter.convertToPdf(html, new FileOutputStream("template.pdf"));
+        String path = new File("template.pdf").getPath();
+        return path;
+    }
+
     /**
-     *
+     * Convert a html file to pdf file
+     * @param file to be converted
      */
-    public void Convertir(){
-        File archivo = new File("Descargas/index.html");//remplazar por ubicacion de la plantilla html
+    public void convert(File file){
+        //File archivo = new File("Descargas/index.html");//remplazar por ubicacion de la plantilla html
+        File archivo = file;
         try {
             HtmlConverter.convertToPdf(new FileInputStream(archivo.getAbsolutePath()), new FileOutputStream("src/main/resources/Salida.pdf")); //reemplazar por el nombre del archivo de salida
         }catch(Exception ex){

@@ -1,5 +1,6 @@
 package com.snorlax;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -39,15 +40,16 @@ public class Analyzer {
 
     /**
      * Replace all the keys with his values, uses the String.replaceAll method
-     * @param Keys List with the column names
-     * @param Values List with the values to be replaced
+     * @param keys List with the column names
+     * @param values List with the values to be replaced
      * @return
      */
-    private String replace(List<String> Keys, List<String> Values){
+    public String replace(List<String> keys, List<String> values){
         String temp = this.str;
-        for (int i = 0; i < Keys.size(); i++) {
-            System.out.println("Key " + this.start + Keys.get(i) + this.end + " Valor " + Values.get(i));
-            temp.replaceAll(this.start + Keys.get(i) + this.end, Values.get(i));
+        for (int i = 0; i < keys.size(); i++) {
+            //System.out.println("Key " + this.start + keys.get(i) + this.end + " Valor " + values.get(i));
+            //System.out.println("valores remplazados " + temp.replaceAll(this.start + keys.get(i) + this.end, values.get(i)));
+            temp = temp.replaceAll(this.start + keys.get(i) + this.end, values.get(i));
         }
         return temp;
     }

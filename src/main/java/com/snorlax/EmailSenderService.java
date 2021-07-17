@@ -71,15 +71,13 @@ public class EmailSenderService {
     }
 
     public void sendMessage() throws MessagingException, NullPointerException {
-        for (String email: this.send) {
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-        }
+        this.message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.sent));
         this.message.setSubject(this.subject);
         BodyPart part = new MimeBodyPart();
         //part.setContent(this.body)
-        System.out.println("Body " + body);
+        //System.out.println("Body " + body);
         part.setContent(this.body,"text/html");
-        System.out.println(part.toString());
+        //System.out.println(part.toString());
         //this.message.setText(this.body,"text/hmtl");
         MimeMultipart multipart = new MimeMultipart();
         multipart.addBodyPart(part);

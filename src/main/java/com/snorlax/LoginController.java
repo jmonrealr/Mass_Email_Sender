@@ -60,7 +60,7 @@ public class LoginController {
             } catch (NoSuchProviderException noSuchProviderException) {
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", noSuchProviderException.getMessage());
             } catch (MessagingException messagingException) {
-                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", "Error sending the message\n" + messagingException.getMessage());
+                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", "Error\n" + messagingException.getMessage());
             } catch (NoClassDefFoundError error){
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Class not found!!", error.getMessage());
             } catch (IOException ioException) {

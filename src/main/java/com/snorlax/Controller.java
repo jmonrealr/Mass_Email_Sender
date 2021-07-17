@@ -85,53 +85,75 @@ public class Controller implements Initializable {
     private List<File> files = new ArrayList<>();
     private Transport transport;
     private ArrayList<String> send = new ArrayList<>();
-    private LinkedHashMap<String, List<String>> dataExcel;
-    private boolean flag = false;
+    private LinkedHashMap<String, List<String>> dataExcelLHM;
+    private boolean hasExcel = false;
+    private List<List<String>> dataExcel;
+    private List<String> variables;
 
     /**
      * Sending email button
      * @param actionEvent When the button is clicked
      */
     public void send(ActionEvent actionEvent) {
+        //System.out.println("Data in Excel" + this.dataExcel.toString());
         String subject = this.emailSubjectField.getText();
         String sent = this.emailToField.getText();
         String message = this.emailMessageField.getText();
         String code = this.htmlCode.getText();
-        if (subject.isBlank() || sent.isBlank() || message.isBlank()){
+        if (subject.isBlank() || message.isBlank()){
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Missing information", "Some Fields are empty");
         }else{
-            String str[];
-            if (sent.contains(",")){
-                str = sent.split(",");
-                for (String email: str) {
-                    this.send.add(email);
+            if (!sent.isBlank()){
+                String str[];
+                if (sent.contains(",")){
+                    str = sent.split(",");
+                    for (String email: str) {
+                        this.send.add(email);
+                    }
+                }else{
+                    this.send.add(sent);
                 }
-            }else{
-                this.send.add(sent);
             }
-            //EmailSenderService email = new EmailSenderService(this.transport,this.session, subject, sent, message, files);
-            //System.out.println(files.toString());
-            if (files == null || files.isEmpty()){
-                files = null;
-                System.out.println("Files empty");
-            }
-            EmailSenderService email2 = new EmailSenderService(this.transport,this.session, subject, this.send, message, files);
-            try {
-                email2.sendMessage();
-                Thread.sleep(1000);
-                this.emailSubjectField.setText("");
-                this.emailToField.setText("");
-                this.emailMessageField.setText("");
-                //System.out.println(files);
-                if (this.files != null){
-                    this.files.clear();
+            if(this.hasExcel){ //with some variables to be replaced in excel
+                Analyzer analyzer = new Analyzer(message);
+                for (int i = 0; i < this.send.size(); i++) {
+                    String email = this.send.get(i);
+                    if ( i+1 < this.dataExcel.size()){// i+1 to ignore Index 0 because has the column Names
+                        //System.out.println("Llamadas Analyzer + " + analyzer.replace(this.variables, this.dataExcel.get(i+1)));
+                        String newMessage = analyzer.replace(this.variables, this.dataExcel.get(i+1));
+                        try {
+                            EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, newMessage, files);
+                            sender.sendMessage();
+                            //Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
+                        } catch (MessagingException e) {
+                            Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message to" + email +"\n" + e.getMessage());
+                        }
+                    }
                 }
-                this.send.clear();
-                this.htmlCode.clear();
-                Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
-            } catch (MessagingException | InterruptedException e) {
-                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message! \n" + e.getMessage());
+            }else{// Just a simple email
+                for (String email: this.send) {
+                    try {
+                        EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, message, files);
+                        sender.sendMessage();
+                        //Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
+                    } catch (MessagingException e) {
+                        Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message to" + email +"\n" + e.getMessage());
+                    }
+                }
             }
+            Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "All Message has been sent", "All message has been sent and received");
+            this.emailSubjectField.setText("");
+            this.emailToField.setText("");
+            this.emailMessageField.setText("");
+            //System.out.println(files);
+            if (this.files != null){
+                this.files = null;
+            }
+            this.send.clear();
+            this.htmlCode.clear();
+            this.dataExcel = null;
+            this.dataExcelLHM = null;
+            this.tableView.setVisible(false);
         }
     }
 
@@ -240,7 +262,7 @@ public class Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
         alert.setHeaderText("You're about to logout!");
-        alert.setContentText("D you want to logout?");
+        alert.setContentText("Do you want to logout?");
         Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
         stage2.getIcons().add(IconImage.getIcon());
         if (alert.showAndWait().get() == ButtonType.OK){
@@ -270,7 +292,7 @@ public class Controller implements Initializable {
     }
 
     public void loadExcel(ActionEvent actionEvent) {
-        this.flag = true;
+        this.hasExcel = true;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Attach File");
         Stage stage = (Stage) vbox.getScene().getWindow();
@@ -285,15 +307,30 @@ public class Controller implements Initializable {
             }
             ReadExcel readExcel = new ReadExcel(file);
             try {
-                this.dataExcel = readExcel.getDataAsLHM();
+                this.dataExcelLHM = readExcel.getDataAsLHM();
+                this.dataExcel = readExcel.getDataAsList();
                 //ObservableList list = (ObservableList) this.dataExcel.keySet();
-                ObservableList list = FXCollections.observableArrayList(new ArrayList<>(this.dataExcel.keySet()));
+                ObservableList list = FXCollections.observableArrayList(new ArrayList<>(this.dataExcelLHM.keySet()));
                 //tableView.setItems((ObservableList)  new ArrayList<>(this.dataExcel.keySet()));
+                this.variables = this.dataExcel.get(0);
+                //System.out.println("Vars in Excel" + variables.toString());
+                if (this.dataExcelLHM.containsKey("CORREO")) {
+                    List<String> temp = this.dataExcelLHM.get("CORREO");
+                    //System.out.println("Correos Excel" + temp.toString());
+                    for (String email: temp) {
+                        this.send.add(email);
+                    }
+                }else{
+                    Alerts.showAlertMessage(Alert.AlertType.WARNING, "Warning","The Excel loaded don't have a Column called \"CORREO\" \n" + "Removing the data");
+                    return;
+                }
                 tableView.setItems(list);
                 tableView.setVisible(true);
                 tableKeys.setVisible(true);
+                tableView.refresh();
                 anchorData.setVisible(true);
             } catch (IOException e) {
+                this.hasExcel = false;
                 Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
             }
         }

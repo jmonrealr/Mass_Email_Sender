@@ -67,12 +67,16 @@ public class ReadExcel {
         return map;
     }
 
+    /**
+     * Read the sheet of the Excel with two for as matrix
+     * @return A List of List with the row values as String
+     */
     public List<List<String>> getDataAsList(){
         List<List<String>> excelContent = new ArrayList();
         int columnCounter = 0;
         int rowCounter = 0;
 
-        try (InputStream inputStream = new FileInputStream(this.path)) {
+        try (InputStream inputStream = new FileInputStream(this.file)) {
             DataFormatter formatter = new DataFormatter();
 
             Workbook workbook = WorkbookFactory.create(inputStream);
@@ -80,23 +84,20 @@ public class ReadExcel {
 
             for (Row row : sheet) {
                 List<String> tempList = new ArrayList();
-
                 for (Cell cell : row) {
                     String text = formatter.formatCellValue(cell);
-                    System.out.print(++columnCounter + ": " + text + " - ");
-                    System.out.println(text.length());
+                    //System.out.print(++columnCounter + ": " + text + " - ");
+                    //System.out.println(text.length());
                     tempList.add(text.length() == 0 ? "" : text);
                 }
                 columnCounter = 0;
                 excelContent.add(tempList);
-
                 ++rowCounter;
             }
         }
         catch (IOException | EncryptedDocumentException ex) {
             System.out.println(ex.toString());
         }
-
         return excelContent;
     }
 }
