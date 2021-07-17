@@ -1,2 +1,4 @@
 # Removing Target Directory
 target/
+# Ignored pdf from conversion
+*.pdf

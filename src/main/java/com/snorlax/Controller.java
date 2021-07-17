@@ -120,6 +120,20 @@ public class Controller implements Initializable {
                     String email = this.send.get(i);
                     if ( i+1 < this.dataExcel.size()){// i+1 to ignore Index 0 because has the column Names
                         //System.out.println("Llamadas Analyzer + " + analyzer.replace(this.variables, this.dataExcel.get(i+1)));
+                        if (!code.isBlank()){
+                            ConvertToPDF convert = new ConvertToPDF();
+                            String pdf = null;
+                            Analyzer codeAnalyzer = new Analyzer(code);
+                            String newCode = codeAnalyzer.replace(this.variables, this.dataExcel.get(i+1));
+                            System.out.println("new code attached");
+                            try {
+                                pdf = convert.convert(newCode);
+                                File file = new File(pdf);
+                                this.files.add(file);
+                            } catch (IOException e) {
+                                Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error in html code", "Something went wrong in html code to pdf\n" + e.getMessage());
+                            }
+                        }
                         String newMessage = analyzer.replace(this.variables, this.dataExcel.get(i+1));
                         try {
                             EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, newMessage, files);
@@ -131,6 +145,17 @@ public class Controller implements Initializable {
                     }
                 }
             }else{// Just a simple email
+                if (!code.isBlank()){
+                    ConvertToPDF convert = new ConvertToPDF();
+                    String pdf = null;
+                    try {
+                        pdf = convert.convert(code);
+                        File file = new File(pdf);
+                        this.files.add(file);
+                    } catch (IOException e) {
+                        Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error in html code", "Something went wrong in html code to pdf\n" + e.getMessage());
+                    }
+                }
                 for (String email: this.send) {
                     try {
                         EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, message, files);
