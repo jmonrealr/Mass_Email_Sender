@@ -26,11 +26,6 @@ public class EmailSenderService {
     private List<File> files = null;
     private Transport transport;
     private MimeMessage message;
-    private String remitente="", clave="", destino="", asunto = "", contenido = "";
-
-    ArrayList<String> destinatarios = new ArrayList<>();
-    ArrayList<String> fileRoute = new ArrayList<>();
-    ArrayList<String> fileName = new ArrayList<>();
 
     /**
      * Constructor of the class who handled one destination
@@ -74,11 +69,7 @@ public class EmailSenderService {
         this.message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.sent));
         this.message.setSubject(this.subject);
         BodyPart part = new MimeBodyPart();
-        //part.setContent(this.body)
-        //System.out.println("Body " + body);
         part.setContent(this.body,"text/html");
-        //System.out.println(part.toString());
-        //this.message.setText(this.body,"text/hmtl");
         MimeMultipart multipart = new MimeMultipart();
         multipart.addBodyPart(part);
         if (files != null){
@@ -91,7 +82,6 @@ public class EmailSenderService {
             }
         }
         this.message.setText(this.body, "text/html");
-        //System.out.println(this.message.toString());
         this.message.setContent(multipart);
         this.transport.sendMessage(this.message, this.message.getAllRecipients());
     }

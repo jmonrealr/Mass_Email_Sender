@@ -86,8 +86,6 @@ public class ReadExcel {
                 List<String> tempList = new ArrayList();
                 for (Cell cell : row) {
                     String text = formatter.formatCellValue(cell);
-                    //System.out.print(++columnCounter + ": " + text + " - ");
-                    //System.out.println(text.length());
                     tempList.add(text.length() == 0 ? "" : text);
                 }
                 columnCounter = 0;

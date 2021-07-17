@@ -47,8 +47,6 @@ public class Analyzer {
     public String replace(List<String> keys, List<String> values){
         String temp = this.str;
         for (int i = 0; i < keys.size(); i++) {
-            //System.out.println("Key " + this.start + keys.get(i) + this.end + " Valor " + values.get(i));
-            //System.out.println("valores remplazados " + temp.replaceAll(this.start + keys.get(i) + this.end, values.get(i)));
             temp = temp.replaceAll(this.start + keys.get(i) + this.end, values.get(i));
         }
         return temp;
