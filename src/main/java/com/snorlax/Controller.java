@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -27,6 +28,11 @@ import java.util.*;
  * This is the MainController for the whole App
  */
 public class Controller implements Initializable {
+    private TitledPane loadedKeys;
+    private TitledPane loadedFiles;
+    private Accordion accordion;
+    private ListView listFiles = new ListView();
+    private ListView listKeys = new ListView();
     @FXML
     private TableColumn tableKeys;
     @FXML
@@ -89,6 +95,7 @@ public class Controller implements Initializable {
     private boolean hasExcel = false;
     private List<List<String>> dataExcel;
     private List<String> variables;
+    private ObservableList<String> filesNames = FXCollections.observableArrayList();
 
     /**
      * Sending email button
@@ -179,6 +186,7 @@ public class Controller implements Initializable {
             this.dataExcel = null;
             this.dataExcelLHM = null;
             this.tableView.setVisible(false);
+            this.filesNames.clear();
         }
     }
 
@@ -188,10 +196,14 @@ public class Controller implements Initializable {
         Stage stage = (Stage) vbox.getScene().getWindow();
         List<File> list = fileChooser.showOpenMultipleDialog(stage);
         if (list != null){
-            for (File file : list){
-                System.out.println(file.toString());
-            }
             this.files = list;
+            for (File file:this.files) {
+                this.filesNames.add(file.getName());
+            }
+            //System.out.println(this.listFiles.getItems().toString());
+            //this.loadedFiles = new TitledPane();
+            //this.loadedFiles.setContent(this.listFiles);
+            //this.loadedFiles.setVisible(true);
         }
     }
 
@@ -349,6 +361,11 @@ public class Controller implements Initializable {
                     Alerts.showAlertMessage(Alert.AlertType.WARNING, "Warning","The Excel loaded don't have a Column called \"CORREO\" \n" + "Removing the data");
                     return;
                 }
+                for (String var :this.variables) {
+                    this.listKeys.getItems().add(var);
+                }
+                System.out.println(this.listKeys.toString());
+                this.loadedKeys.setContent(this.listKeys);
                 tableView.setItems(list);
                 tableView.setVisible(true);
                 tableKeys.setVisible(true);
@@ -366,7 +383,25 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        anchorData.setVisible(false);
+        anchorData.setVisible(true);
         tableView.setVisible(false);
+        this.listFiles.setItems(this.filesNames);
+
+    }
+
+    public void loadFileList(MouseEvent mouseEvent) {
+        if (this.files != null && this.listFiles.getItems().isEmpty()){
+            List<String> names = new ArrayList<>();
+            for (File file: this.files) {
+                names.add(file.getName());
+            }
+            ObservableList<String> loaded = FXCollections.observableList(names);
+            System.out.println("Filelist loaded" + this.listFiles.getItems().toString());
+            this.loadedFiles = new TitledPane();
+            this.loadedFiles.setContent(this.listFiles);
+            this.loadedFiles.setVisible(true);
+            anchorData.setVisible(true);
+
+        }
     }
 }

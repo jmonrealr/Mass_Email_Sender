@@ -34,8 +34,10 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -49,6 +51,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -86,7 +89,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.37973273942093544, 0.5" focusTraversable="true" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.37973273942093544, 0.5" focusTraversable="true" prefHeight="553.0" prefWidth="981.0" VBox.vgrow="ALWAYS">
       <items>
             <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #6165c2;">
                <children>
@@ -206,6 +209,19 @@
                             <TableColumn fx:id="tableKeys" prefWidth="127.0" text="Keys from the excel" />
                           </columns>
                         </TableView>
+                        <Accordion fx:id="accordion" layoutX="42.0" layoutY="428.0">
+                          <panes>
+                            <TitledPane fx:id="loadedFiles" animated="false" onMouseClicked="#loadFileList" text="Loaded Files">
+                                 <content>
+                                    <ListView fx:id="listFiles" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                            <TitledPane fx:id="loadedKeys" animated="false" text="Keys from the excel">
+                                 <content>
+                                    <ListView fx:id="listKeys" prefHeight="200.0" prefWidth="200.0" />
+                                 </content></TitledPane>
+                          </panes>
+                        </Accordion>
                      </children></AnchorPane>
           </content>
         </ScrollPane>
