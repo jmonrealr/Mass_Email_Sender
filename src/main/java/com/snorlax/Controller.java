@@ -114,9 +114,6 @@ public class Controller implements Initializable {
                     this.send.add(sent);
                 }
             }
-            if (!code.isBlank()){
-                Analyzer codeAnalyzer = new Analyzer(code);
-            }
             if(this.hasExcel){ //with some variables to be replaced in excel
                 Analyzer analyzer = new Analyzer(message);
                 for (int i = 0; i < this.send.size(); i++) {
