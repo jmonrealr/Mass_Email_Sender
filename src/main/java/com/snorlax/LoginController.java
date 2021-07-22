@@ -27,6 +27,11 @@ public class LoginController {
     private Scene scene;
     private Stage stage;
 
+    /**
+     * When Logging is Submitted, Load and gets {@link Config} Properties
+     * Creates a Session and Transport them to try a connection with Credentials
+     * @param e Log In button
+     */
     @FXML
     protected void submitClicked(ActionEvent e) {
         String password = pfPassword.getText();

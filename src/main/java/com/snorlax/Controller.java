@@ -106,7 +106,7 @@ public class Controller implements Initializable {
     private ObservableList<String> currentKeys = FXCollections.observableArrayList();
 
     /**
-     * Sending email button
+     * Handled all actions and validations to send an Email
      * @param actionEvent When the button is clicked
      */
     public void send(ActionEvent actionEvent) {
@@ -196,6 +196,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Attach Files with FileChooser to Email
+     * @param actionEvent Button -> Attach File
+     */
     public void attachFile(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Attach File");
@@ -215,6 +219,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Inserts as Template HTML Code in the HTML EDITOR
+     * @param actionEvent from insert HTML button in Scene
+     */
     public void insertHtml(ActionEvent actionEvent) {
         String []template = {
                 "<!DOCTYPE html>\n",
@@ -243,6 +251,7 @@ public class Controller implements Initializable {
     public void exit(ActionEvent actionEvent) {
         System.exit(0);
     }
+
     /**
      *  Opens a ChoiceDialog with the properties with the possibility to be changed with one TextInputDialog
      * @param actionEvent when MenuItem Preferences is pressed
@@ -326,6 +335,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Calls {@link Config} to get all properties
+     * @param actionEvent from show buttons menu Item
+     */
     public void showProps(ActionEvent actionEvent) {
         ChoiceDialog<String> dialog = new ChoiceDialog<>("",Config.getPropertiesName());
         dialog.setTitle("Properties");
@@ -336,6 +349,11 @@ public class Controller implements Initializable {
         Optional<String> result = dialog.showAndWait();
     }
 
+    /**
+     * Call {@link ReadExcel} to load and read data from Excel file
+     * This file is selected from one fileChooser
+     * @param actionEvent
+     */
     public void loadExcel(ActionEvent actionEvent) {
         this.hasExcel = true;
         FileChooser fileChooser = new FileChooser();
@@ -386,9 +404,18 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Schedule Send with datepicker
+     * @param actionEvent button clicked
+     */
     public void scheduleSend(ActionEvent actionEvent) {
     }
 
+    /**
+     * Initilize some Objects of the Scene
+     * @param url current
+     * @param resourceBundle current
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         anchorData.setVisible(true);
@@ -398,24 +425,8 @@ public class Controller implements Initializable {
 
     }
 
-    public void loadFileList(MouseEvent mouseEvent) {
-        if (this.files != null && this.listFiles.getItems().isEmpty()){
-            List<String> names = new ArrayList<>();
-            for (File file: this.files) {
-                names.add(file.getName());
-            }
-            ObservableList<String> loaded = FXCollections.observableList(names);
-            System.out.println("Filelist loaded" + this.listFiles.getItems().toString());
-            this.loadedFiles = new TitledPane();
-            this.loadedFiles.setContent(this.listFiles);
-            this.loadedFiles.setVisible(true);
-            anchorData.setVisible(true);
-
-        }
-    }
-
     /**
-     * When "enter" is pressed, get current text from the message and insert text
+     * When "enter" is pressed, get current CaretPosition from the message and insert text
      * with the html tag <br>
      * @param key pressed from the keyboard
      */

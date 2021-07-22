@@ -65,6 +65,11 @@ public class EmailSenderService {
         this.message = new MimeMessage(session);
     }
 
+    /**
+     *  Send the message with Current values from this Object
+     * @throws MessagingException When the connections fails
+     * @throws NullPointerException Null values
+     */
     public void sendMessage() throws MessagingException, NullPointerException {
         this.message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.sent));
         this.message.setSubject(this.subject);

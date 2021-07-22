@@ -9,6 +9,10 @@ import java.io.*;
  */
 public class ConvertToPDF {
 
+    /**
+     * Convert a String html code to pdf file
+     * @param html String code to be transformed
+     */
     public String convert(String html) throws IOException {
         HtmlConverter.convertToPdf(html, new FileOutputStream("template.pdf"));
         String path = new File("template.pdf").getPath();
