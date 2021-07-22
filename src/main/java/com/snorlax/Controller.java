@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -28,10 +30,15 @@ import java.util.*;
  * This is the MainController for the whole App
  */
 public class Controller implements Initializable {
+    @FXML
     private TitledPane loadedKeys;
+    @FXML
     private TitledPane loadedFiles;
+    @FXML
     private Accordion accordion;
+    @FXML
     private ListView listFiles = new ListView();
+    @FXML
     private ListView listKeys = new ListView();
     @FXML
     private TableColumn tableKeys;
@@ -96,6 +103,7 @@ public class Controller implements Initializable {
     private List<List<String>> dataExcel;
     private List<String> variables;
     private ObservableList<String> filesNames = FXCollections.observableArrayList();
+    private ObservableList<String> currentKeys = FXCollections.observableArrayList();
 
     /**
      * Sending email button
@@ -178,9 +186,7 @@ public class Controller implements Initializable {
             this.emailToField.setText("");
             this.emailMessageField.setText("");
             //System.out.println(files);
-            if (this.files != null){
-                this.files = null;
-            }
+            this.files.clear();
             this.send.clear();
             this.htmlCode.clear();
             this.dataExcel = null;
@@ -198,8 +204,10 @@ public class Controller implements Initializable {
         if (list != null){
             this.files = list;
             for (File file:this.files) {
+                System.out.println(file.getName());
                 this.filesNames.add(file.getName());
             }
+            System.out.println("Current files names" + this.filesNames.toString());
             //System.out.println(this.listFiles.getItems().toString());
             //this.loadedFiles = new TitledPane();
             //this.loadedFiles.setContent(this.listFiles);
@@ -363,12 +371,12 @@ public class Controller implements Initializable {
                 }
                 for (String var :this.variables) {
                     this.listKeys.getItems().add(var);
+                    this.currentKeys.add(var);
                 }
-                System.out.println(this.listKeys.toString());
-                this.loadedKeys.setContent(this.listKeys);
+                System.out.println("Current Keys" + this.currentKeys.toString());
+                //this.loadedKeys.setContent(this.listKeys);
                 tableView.setItems(list);
                 tableView.setVisible(true);
-                tableKeys.setVisible(true);
                 tableView.refresh();
                 anchorData.setVisible(true);
             } catch (IOException e) {
@@ -386,6 +394,7 @@ public class Controller implements Initializable {
         anchorData.setVisible(true);
         tableView.setVisible(false);
         this.listFiles.setItems(this.filesNames);
+        this.listKeys.setItems(this.currentKeys);
 
     }
 
@@ -402,6 +411,18 @@ public class Controller implements Initializable {
             this.loadedFiles.setVisible(true);
             anchorData.setVisible(true);
 
+        }
+    }
+
+    /**
+     * When "enter" is pressed, get current text from the message and insert text
+     * with the html tag <br>
+     * @param key pressed from the keyboard
+     */
+    public void keyPressed(KeyEvent key) {
+        if (key.getCode().equals(KeyCode.ENTER)){
+            int cursor = emailMessageField.getCaretPosition();
+            emailMessageField.insertText(cursor-1, " <br>\n");
         }
     }
 }

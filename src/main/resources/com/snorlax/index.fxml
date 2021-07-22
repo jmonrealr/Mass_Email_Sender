@@ -183,7 +183,7 @@
                     <tabs>
                       <Tab text="Message">
                            <content>
-                        <TextArea fx:id="emailMessageField" prefHeight="175.0" prefWidth="305.0" style="-fx-border-color: #0598ff;" wrapText="true" />
+                        <TextArea fx:id="emailMessageField" onKeyPressed="#keyPressed" prefHeight="175.0" prefWidth="305.0" style="-fx-border-color: #0598ff;" wrapText="true" />
                            </content>
                         </Tab>
                       <Tab text="HTML editor">
@@ -211,7 +211,7 @@
                         </TableView>
                         <Accordion fx:id="accordion" layoutX="42.0" layoutY="428.0">
                           <panes>
-                            <TitledPane fx:id="loadedFiles" animated="false" onMouseClicked="#loadFileList" text="Loaded Files">
+                            <TitledPane fx:id="loadedFiles" animated="false" text="Loaded Files">
                                  <content>
                                     <ListView fx:id="listFiles" prefHeight="200.0" prefWidth="200.0" />
                                  </content>

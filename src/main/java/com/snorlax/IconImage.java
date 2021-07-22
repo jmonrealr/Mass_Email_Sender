@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
  */
 public class IconImage {
     /**
-     * Get the default icon for the app con
+     * Get the default icon for the app
      * The icon name is obtained from the properties
      * @return Object Image with the image
      */
