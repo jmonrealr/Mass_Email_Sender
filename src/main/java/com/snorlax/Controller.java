@@ -198,7 +198,7 @@ public class Controller implements Initializable {
 
     /**
      * Attach Files with FileChooser to Email
-     * @param actionEvent Button -> Attach File
+     * @param actionEvent Button Attach File
      */
     public void attachFile(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -352,7 +352,7 @@ public class Controller implements Initializable {
     /**
      * Call {@link ReadExcel} to load and read data from Excel file
      * This file is selected from one fileChooser
-     * @param actionEvent
+     * @param actionEvent Button Load Excel
      */
     public void loadExcel(ActionEvent actionEvent) {
         this.hasExcel = true;

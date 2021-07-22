@@ -12,6 +12,8 @@ public class ConvertToPDF {
     /**
      * Convert a String html code to pdf file
      * @param html String code to be transformed
+     * @throws IOException if failed to parse code to PDF
+     * @return path of the file saved
      */
     public String convert(String html) throws IOException {
         HtmlConverter.convertToPdf(html, new FileOutputStream("template.pdf"));

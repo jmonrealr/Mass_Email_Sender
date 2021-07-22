@@ -42,7 +42,7 @@ public class Analyzer {
      * Replace all the keys with his values, uses the String.replaceAll method
      * @param keys List with the column names
      * @param values List with the values to be replaced
-     * @return
+     * @return String with text decoded
      */
     public String replace(List<String> keys, List<String> values){
         String temp = this.str;

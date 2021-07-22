@@ -69,6 +69,7 @@ public class App extends Application {
      *  were created without the JavaFX Launcher, such as when using an IDE in which the JavaFX
      *  tools are not fully integrated. Also, Swing applications that embed JavaFX code require the
      *  main() method.
+     *  @param args Command line parameters are not used
      */
     public static void main(String[] args) {
         launch(args);
