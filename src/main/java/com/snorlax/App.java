@@ -36,7 +36,7 @@ public class App extends Application {
     }
 
     /**
-     * It's supposed to load an fxml file but App.class.getResource don't works
+     * Load an fxml file using the Class.getResource
      * @param fxml file name
      * @return fxml file loaded
      * @throws IOException when the file is not founded

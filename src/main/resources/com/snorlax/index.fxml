@@ -47,8 +47,6 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -204,12 +202,7 @@
           <content>
             <AnchorPane id="ContentData" fx:id="anchorData" prefHeight="545.0" prefWidth="316.0">
                      <children>
-                        <TableView fx:id="tableView" layoutX="28.0" layoutY="180.0" prefHeight="200.0" prefWidth="130.0">
-                          <columns>
-                            <TableColumn fx:id="tableKeys" prefWidth="127.0" text="Keys from the excel" />
-                          </columns>
-                        </TableView>
-                        <Accordion fx:id="accordion" layoutX="42.0" layoutY="428.0">
+                        <Accordion fx:id="accordion" layoutX="14.0" layoutY="103.0">
                           <panes>
                             <TitledPane fx:id="loadedFiles" animated="false" text="Loaded Files">
                                  <content>

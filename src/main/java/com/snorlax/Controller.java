@@ -115,7 +115,7 @@ public class Controller implements Initializable {
         String sent = this.emailToField.getText();
         String message = this.emailMessageField.getText();
         String code = this.htmlCode.getText();
-        if (subject.isBlank() || message.isBlank()){
+        if (subject.isBlank() || message.isBlank() || (!hasExcel && sent.isBlank())){
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Missing information", "Some Fields are empty");
         }else{
             if (!sent.isBlank()){
@@ -191,7 +191,6 @@ public class Controller implements Initializable {
             this.htmlCode.clear();
             this.dataExcel = null;
             this.dataExcelLHM = null;
-            this.tableView.setVisible(false);
             this.filesNames.clear();
         }
     }
@@ -208,10 +207,10 @@ public class Controller implements Initializable {
         if (list != null){
             this.files = list;
             for (File file:this.files) {
-                System.out.println(file.getName());
+                //System.out.println(file.getName());
                 this.filesNames.add(file.getName());
             }
-            System.out.println("Current files names" + this.filesNames.toString());
+            //System.out.println("Current files names" + this.filesNames.toString());
             //System.out.println(this.listFiles.getItems().toString());
             //this.loadedFiles = new TitledPane();
             //this.loadedFiles.setContent(this.listFiles);
@@ -273,6 +272,7 @@ public class Controller implements Initializable {
             dialog.hide();
             dialog.close();
         }
+        stage.close();
         if (!key.isBlank() || !value.isBlank()){
             TextInputDialog inputDialog = new TextInputDialog(value);
             inputDialog.setTitle("Enter a value");
@@ -373,7 +373,7 @@ public class Controller implements Initializable {
                 this.dataExcelLHM = readExcel.getDataAsLHM();
                 this.dataExcel = readExcel.getDataAsList();
                 //ObservableList list = (ObservableList) this.dataExcel.keySet();
-                ObservableList list = FXCollections.observableArrayList(new ArrayList<>(this.dataExcelLHM.keySet()));
+                //ObservableList list = FXCollections.observableArrayList(new ArrayList<>(this.dataExcelLHM.keySet()));
                 //tableView.setItems((ObservableList)  new ArrayList<>(this.dataExcel.keySet()));
                 this.variables = this.dataExcel.get(0);
                 //System.out.println("Vars in Excel" + variables.toString());
@@ -389,13 +389,11 @@ public class Controller implements Initializable {
                 }
                 for (String var :this.variables) {
                     this.listKeys.getItems().add(var);
-                    this.currentKeys.add(var);
+                    //this.currentKeys.add(var);
                 }
-                System.out.println("Current Keys" + this.currentKeys.toString());
-                //this.loadedKeys.setContent(this.listKeys);
-                tableView.setItems(list);
-                tableView.setVisible(true);
-                tableView.refresh();
+                //System.out.println("variables " + this.variables.toString());
+                //System.out.println("Current Keys" + this.currentKeys.toString());
+                //System.out.println("List view keys " + listKeys.toString());
                 anchorData.setVisible(true);
             } catch (IOException e) {
                 this.hasExcel = false;
@@ -419,7 +417,6 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         anchorData.setVisible(true);
-        tableView.setVisible(false);
         this.listFiles.setItems(this.filesNames);
         this.listKeys.setItems(this.currentKeys);
 
