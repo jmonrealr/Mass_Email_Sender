@@ -32,6 +32,7 @@ public class App extends Application {
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
         primaryStage.show();
+        primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(windowEvent -> exit(primaryStage));
     }
 

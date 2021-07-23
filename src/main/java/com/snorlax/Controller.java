@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -30,6 +31,8 @@ import java.util.*;
  * This is the MainController for the whole App
  */
 public class Controller implements Initializable {
+    @FXML
+    private HTMLEditor htmlEditor;
     @FXML
     private TitledPane loadedKeys;
     @FXML
@@ -80,8 +83,8 @@ public class Controller implements Initializable {
     private Label lbl_message;
     @FXML
     private TextField emailSubjectField;
-    @FXML
-    private TextArea emailMessageField;
+    //@FXML
+    //private TextArea emailMessageField;
     @FXML
     private Button sendEmailButton;
     @FXML
@@ -113,7 +116,7 @@ public class Controller implements Initializable {
         //System.out.println("Data in Excel" + this.dataExcel.toString());
         String subject = this.emailSubjectField.getText();
         String sent = this.emailToField.getText();
-        String message = this.emailMessageField.getText();
+        String message = this.htmlEditor.getHtmlText();
         String code = this.htmlCode.getText();
         if (subject.isBlank() || message.isBlank() || (!hasExcel && sent.isBlank())){
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Missing information", "Some Fields are empty");
@@ -184,7 +187,7 @@ public class Controller implements Initializable {
             Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "All Message has been sent", "All message has been sent and received");
             this.emailSubjectField.setText("");
             this.emailToField.setText("");
-            this.emailMessageField.setText("");
+            this.htmlEditor.setHtmlText("");
             //System.out.println(files);
             this.files.clear();
             this.send.clear();
@@ -422,15 +425,15 @@ public class Controller implements Initializable {
 
     }
 
-    /**
+    /*/**
      * When "enter" is pressed, get current CaretPosition from the message and insert text
      * with the html tag <br>
      * @param key pressed from the keyboard
-     */
+
     public void keyPressed(KeyEvent key) {
         if (key.getCode().equals(KeyCode.ENTER)){
             int cursor = emailMessageField.getCaretPosition();
             emailMessageField.insertText(cursor-1, " <br>\n");
         }
-    }
+    }*/
 }

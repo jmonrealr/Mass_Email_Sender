@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Analyzer {
     private String str;
-    private String end = ">";
-    private String start = "<";
+    private String end = "&gt;";// HTML editor replaces > with &gt;
+    private String start = "&lt;";// HTML editor replaces < with &lt;
     /**
      * Empty constructor
      */

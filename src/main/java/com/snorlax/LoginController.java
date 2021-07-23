@@ -59,6 +59,7 @@ public class LoginController {
                 stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
+                stage.setResizable(true);
                 stage.show();
             } catch (AuthenticationFailedException failedException) {
                 Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error" , "Authentication Failed\n" + failedException.getMessage());
