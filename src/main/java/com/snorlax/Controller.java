@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
@@ -100,7 +101,7 @@ public class Controller implements Initializable {
     private LinkedHashMap<String, List<String>> dataExcelLHM;
     private boolean hasExcel = false;
     private List<List<String>> dataExcel;
-    private List<String> variables;
+    private List<String> variables = new ArrayList<>();
     private ObservableList<String> filesNames = FXCollections.observableArrayList();
     private ObservableList<String> currentKeys = FXCollections.observableArrayList();
 
@@ -109,7 +110,6 @@ public class Controller implements Initializable {
      * @param actionEvent When the button is clicked
      */
     public void send(ActionEvent actionEvent) {
-        //System.out.println("Data in Excel" + this.dataExcel.toString());
         String subject = this.emailSubjectField.getText();
         String sent = this.emailToField.getText();
         String message = this.htmlEditor.getHtmlText();
@@ -139,7 +139,6 @@ public class Controller implements Initializable {
                             String pdf = null;
                             Analyzer codeAnalyzer = new Analyzer(code, "<", ">");
                             String newCode = codeAnalyzer.replace(this.variables, this.dataExcel.get(i+1));
-                            System.out.println("new code attached");
                             try {
                                 pdf = convert.convert(newCode);
                                 File file = new File(pdf);
@@ -152,7 +151,6 @@ public class Controller implements Initializable {
                         try {
                             EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, newMessage, files);
                             sender.sendMessage();
-                            //Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
                         } catch (MessagingException e) {
                             Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message to" + email +"\n" + e.getMessage());
                         }
@@ -174,7 +172,6 @@ public class Controller implements Initializable {
                     try {
                         EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, message, files);
                         sender.sendMessage();
-                        //Alerts.showAlertMessage(Alert.AlertType.CONFIRMATION, "Message has been sent", "The message has been sent and received");
                     } catch (MessagingException e) {
                         Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message to" + email +"\n" + e.getMessage());
                     }
@@ -184,7 +181,6 @@ public class Controller implements Initializable {
             this.emailSubjectField.setText("");
             this.emailToField.setText("");
             this.htmlEditor.setHtmlText("");
-            //System.out.println(files);
             this.files.clear();
             this.send.clear();
             this.htmlCode.clear();
@@ -209,14 +205,8 @@ public class Controller implements Initializable {
         if (list != null){
             this.files = list;
             for (File file:this.files) {
-                //System.out.println(file.getName());
                 this.filesNames.add(file.getName());
             }
-            //System.out.println("Current files names" + this.filesNames.toString());
-            //System.out.println(this.listFiles.getItems().toString());
-            //this.loadedFiles = new TitledPane();
-            //this.loadedFiles.setContent(this.listFiles);
-            //this.loadedFiles.setVisible(true);
         }
     }
 
@@ -423,15 +413,16 @@ public class Controller implements Initializable {
 
     }
 
-    /*/**
+    /** @deprecated
      * When "enter" is pressed, get current CaretPosition from the message and insert text
      * with the html tag <br>
      * @param key pressed from the keyboard
-
+     */
     public void keyPressed(KeyEvent key) {
+        /*
         if (key.getCode().equals(KeyCode.ENTER)){
             int cursor = emailMessageField.getCaretPosition();
             emailMessageField.insertText(cursor-1, " <br>\n");
-        }
-    }*/
+        }*/
+    }
 }

@@ -15,7 +15,7 @@ public class Analyzer {
      * Empty constructor
      */
     Analyzer(){
-
+        this.str = null;
     }
 
     /**
@@ -23,6 +23,7 @@ public class Analyzer {
      * @param str to be analyzed
      */
     Analyzer(String str){
+        this();
         this.str = str;
     }
 
@@ -33,7 +34,7 @@ public class Analyzer {
      * @param end of the pattern
      */
     Analyzer(String str, String start, String end){
-        this.str = str;
+        this(str);
         this.end = end;
         this.start = start;
     }
@@ -52,4 +53,12 @@ public class Analyzer {
         return temp;
     }
 
+    @Override
+    public String toString() {
+        return "Analyzer{" +
+                "str='" + str + '\'' +
+                ", endPattern='" + end + '\'' +
+                ", startPattern='" + start + '\'' +
+                '}';
+    }
 }
