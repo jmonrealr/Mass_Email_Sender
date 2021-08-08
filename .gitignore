@@ -4,3 +4,5 @@ target/
 out/
 # Ignored pdf from conversion
 *.pdf
+*.jpg
+*.png
