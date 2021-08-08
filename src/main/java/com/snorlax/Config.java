@@ -19,8 +19,9 @@ public class Config {
      * Loads the configuration and made available to all class of the app
      */
     static {
-        try (FileInputStream in = new FileInputStream(Config.class.getResource("../../config/configuration.properties").getPath())) {
-            defaultProps.load(in);
+       // try (FileInputStream in = new FileInputStream(String.valueOf(Config.class.getClassLoader().getResourceAsStream("config/config.properties")))) {
+        try {
+            defaultProps.load(Config.class.getClassLoader().getResourceAsStream("config/config.properties"));
         } catch (IOException e) {
             Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error in Config", "Something is wrong with the configuration properties, please check! \n" +  e.getMessage());
         }
@@ -53,7 +54,7 @@ public class Config {
                 PropertiesConfiguration config = new PropertiesConfiguration();
                 PropertiesConfigurationLayout layout = new PropertiesConfigurationLayout();
                 config.setLayout(layout);
-                layout.load(config, new FileReader("../../config/configuration.properties"));
+                layout.load(config, new FileReader(Config.class.getClassLoader().getResourceAsStream("config/config.properties").toString()));
                 config.setProperty(key, newValue);
                 StringWriter stringWriter = new StringWriter();
                 layout.save(config, stringWriter);
@@ -69,7 +70,7 @@ public class Config {
     public static void loadConfig() throws IOException {
         try {
             Properties properties = new Properties();
-            String path = "configuration.properties";
+            String path = "config.properties";
             InputStream inputStream = Config.class.getResourceAsStream(path);
             if (inputStream != null){
                 properties.load(inputStream);
@@ -88,7 +89,7 @@ public class Config {
         PropertiesConfiguration config = new PropertiesConfiguration();
         PropertiesConfigurationLayout layout = new PropertiesConfigurationLayout();
         config.setLayout(layout);
-        layout.load(config, new FileReader("/src/main/java/resources/config/configuration.properties"));
+        layout.load(config, new FileReader("/src/main/java/resources/config/config.properties"));
         config.setProperty(key, value);
         StringWriter stringWriter = new StringWriter();
         layout.save(config, stringWriter);

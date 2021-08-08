@@ -6,11 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Start driver of the APP
@@ -28,7 +26,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         scene = new Scene(loadFXML("Login"));
-        primaryStage.getIcons().add(IconImage.getIcon());
+        primaryStage.getIcons().add(AppIcon.getIcon());
         primaryStage.setTitle("Sistema de Envio de Correos Masivos");
         primaryStage.setScene(this.scene);
         primaryStage.show();
@@ -86,7 +84,7 @@ public class App extends Application {
         alert.setHeaderText("You're about to exit!");
         alert.setContentText("Do you want to exit?");
         Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage2.getIcons().add(IconImage.getIcon());
+        stage2.getIcons().add(AppIcon.getIcon());
         if (alert.showAndWait().get() == ButtonType.OK){
             stage.close();
         }

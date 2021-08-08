@@ -18,7 +18,7 @@ public class Alerts {
         alert.setHeaderText(null);
         alert.setContentText(message);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(IconImage.getIcon());
+        stage.getIcons().add(AppIcon.getIcon());
         alert.show();
     }
 

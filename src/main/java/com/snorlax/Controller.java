@@ -6,13 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
@@ -134,14 +130,14 @@ public class Controller implements Initializable {
             }
             if(this.hasExcel){ //with some variables to be replaced in excel
                 Analyzer analyzer = new Analyzer(message);
-                for (int i = 0; i < this.send.size(); i++) {
+                for (int i = 0; i < this.send.size() || i <= 100; i++) {
                     String email = this.send.get(i);
                     if ( i+1 < this.dataExcel.size()){// i+1 to ignore Index 0 because has the column Names
                         //System.out.println("Llamadas Analyzer + " + analyzer.replace(this.variables, this.dataExcel.get(i+1)));
                         if (!code.isBlank()){
                             ConvertToPDF convert = new ConvertToPDF();
                             String pdf = null;
-                            Analyzer codeAnalyzer = new Analyzer(code);
+                            Analyzer codeAnalyzer = new Analyzer(code, "<", ">");
                             String newCode = codeAnalyzer.replace(this.variables, this.dataExcel.get(i+1));
                             System.out.println("new code attached");
                             try {
@@ -195,6 +191,9 @@ public class Controller implements Initializable {
             this.dataExcel = null;
             this.dataExcelLHM = null;
             this.filesNames.clear();
+            this.currentKeys.clear();
+            this.variables.clear();
+            this.hasExcel = false;
         }
     }
 
@@ -264,7 +263,7 @@ public class Controller implements Initializable {
         dialog.setHeaderText("Look at the properties");
         dialog.setContentText("Choose your property");
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(IconImage.getIcon());
+        stage.getIcons().add(AppIcon.getIcon());
         Optional<String> result = dialog.showAndWait();
         String key = "", value = "";
         if (result.isPresent()){
@@ -282,7 +281,7 @@ public class Controller implements Initializable {
             inputDialog.setHeaderText("Please fill the input");
             inputDialog.setContentText("Please enter the new value of " + key);
             Stage stage1 = (Stage) inputDialog.getDialogPane().getScene().getWindow();
-            stage1.getIcons().add(IconImage.getIcon());
+            stage1.getIcons().add(AppIcon.getIcon());
             Optional<String> temp = dialog.showAndWait();
             if (temp.isPresent()){
                 String newValue = temp.get();
@@ -321,7 +320,7 @@ public class Controller implements Initializable {
         alert.setHeaderText("You're about to logout!");
         alert.setContentText("Do you want to logout?");
         Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage2.getIcons().add(IconImage.getIcon());
+        stage2.getIcons().add(AppIcon.getIcon());
         if (alert.showAndWait().get() == ButtonType.OK){
             try {
                 this.session = null;
@@ -348,7 +347,7 @@ public class Controller implements Initializable {
         dialog.setHeaderText("You can see the properties");
         dialog.setContentText("Property");
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(IconImage.getIcon());
+        stage.getIcons().add(AppIcon.getIcon());
         Optional<String> result = dialog.showAndWait();
     }
 
@@ -367,7 +366,6 @@ public class Controller implements Initializable {
             return;
         }else {
             if (!file.isFile()){
-                System.out.println(file.toString());
                 Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
                 return;
             }
