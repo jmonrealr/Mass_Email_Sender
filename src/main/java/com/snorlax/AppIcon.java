@@ -12,7 +12,6 @@ public class AppIcon {
      * @return Object Image with the image
      */
     public static Image getIcon(){
-        System.out.println("/images/" + Config.getProperty("icon"));
         return new Image("/images/" + Config.getProperty("icon"));
     }
 }

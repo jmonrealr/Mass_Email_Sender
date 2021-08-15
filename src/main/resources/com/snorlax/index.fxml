@@ -120,7 +120,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-        <AnchorPane prefHeight="500.0" prefWidth="481.0" style="-fx-background-color: #D7E2EA;" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="481.0" style="-fx-background-color: #D7E2EA;" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="lbl_sent" layoutX="14.0" layoutY="127.0" prefHeight="20.0" prefWidth="57.0" text="Sent to:" AnchorPane.leftAnchor="14.0">
                      <font>
@@ -202,6 +202,11 @@
                         <Font size="14.0" />
                      </font>
                   </SplitMenuButton>
+                  <DatePicker fx:id="datePicker" layoutX="254.0" layoutY="594.0" promptText="Choose a Date" AnchorPane.bottomAnchor="48.0" />
+                  <Spinner fx:id="hour" layoutX="265.0" layoutY="628.0" prefHeight="25.0" prefWidth="63.0" AnchorPane.bottomAnchor="14.0" />
+                  <Label fx:id="lbl_hour" layoutX="229.0" layoutY="632.0" text="hour" AnchorPane.bottomAnchor="18.0" />
+                  <Label fx:id="lbl_min" layoutX="338.0" layoutY="632.0" prefHeight="17.0" prefWidth="46.0" text="Minute" AnchorPane.bottomAnchor="18.0" />
+                  <Spinner fx:id="minute" layoutX="384.0" layoutY="628.0" AnchorPane.bottomAnchor="14.0" />
          </children>
       </AnchorPane>
         <ScrollPane prefHeight="667.0" prefWidth="147.0">
@@ -221,6 +226,8 @@
                                  </content></TitledPane>
                           </panes>
                         </Accordion>
+                        <ColorPicker fx:id="colorPicker" layoutX="14.0" layoutY="45.0" AnchorPane.leftAnchor="14.0" />
+                        <Label fx:id="lbl_background" layoutX="34.0" layoutY="24.0" text="Background Color" AnchorPane.leftAnchor="34.0" />
                      </children></AnchorPane>
           </content>
         </ScrollPane>

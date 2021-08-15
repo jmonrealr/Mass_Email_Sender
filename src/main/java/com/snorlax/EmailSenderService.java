@@ -9,7 +9,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,6 +20,7 @@ import java.util.Properties;
  */
 public class EmailSenderService {
 
+    private Date date = null;
     private String subject;
     private ArrayList<String> send;
     private String sent;
@@ -35,8 +38,9 @@ public class EmailSenderService {
      * @param sent e-mail address who receive the message
      * @param body or body of the e-mail
      * @param files who be attached to the message
+     * @param date date
      */
-    public EmailSenderService(Transport transport, Session session, String subject, String sent, String body, List<File> files) {
+    public EmailSenderService(Transport transport, Session session, String subject, String sent, String body, List<File> files, Date date) {
         this.transport = transport;
         this.session = session;
         this.subject = subject;
@@ -44,6 +48,7 @@ public class EmailSenderService {
         this.body = body;
         this.files = files;
         this.message = new MimeMessage(session);
+        this.date = date;
     }
 
     /**
@@ -54,8 +59,9 @@ public class EmailSenderService {
      * @param send e-mail address who receive the message
      * @param body or message of the e-mail
      * @param files who be attached to the message
+     * @param date date
      */
-    public EmailSenderService(Transport transport, Session session, String subject, ArrayList<String> send, String body, List<File> files) {
+    public EmailSenderService(Transport transport, Session session, String subject, ArrayList<String> send, String body, List<File> files, Date date) {
         this.transport = transport;
         this.session = session;
         this.subject = subject;
@@ -63,6 +69,7 @@ public class EmailSenderService {
         this.body = body;
         this.files = files;
         this.message = new MimeMessage(session);
+        this.date = date;
     }
 
     /**
@@ -85,6 +92,9 @@ public class EmailSenderService {
                 files.setFileName(file.getName());
                 multipart.addBodyPart(files);
             }
+        }
+        if (this.date != null) {
+            this.message.setSentDate(this.date);
         }
         this.message.setText(this.body, "text/html");
         this.message.setContent(multipart);

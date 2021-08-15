@@ -41,9 +41,7 @@ public class App extends Application {
      * @throws IOException when the file is not founded
      */
     private static Parent loadFXML(String fxml) throws IOException {
-        //System.out.println(App.class.getResource( fxml + ".fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        //System.out.println("loading fxml " + fxmlLoader.toString());
         return fxmlLoader.load();
     }
 

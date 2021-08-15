@@ -17,7 +17,7 @@ public class ConvertToPDF {
      */
     public String convert(String html) throws IOException {
         HtmlConverter.convertToPdf(html, new FileOutputStream("template.pdf"));
-        String path = new File("template.pdf").getPath();
+        String path = new File("template.pdf").getAbsolutePath();
         return path;
     }
 

@@ -16,18 +16,32 @@ import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
  * This is the MainController for the whole App
  */
 public class Controller implements Initializable {
+    @FXML
+    private AnchorPane center;
+    @FXML
+    private ColorPicker colorPicker;
+    @FXML
+    private Label lbl_background;
+    @FXML
+    private Spinner<Integer> hour, minute;
+    @FXML
+    private Label lbl_min, lbl_hour;
+    @FXML
+    private DatePicker datePicker = new DatePicker();
     @FXML
     private HTMLEditor htmlEditor;
     @FXML
@@ -95,15 +109,47 @@ public class Controller implements Initializable {
     private Scene scene;
     private Stage stage;
     private Session session;
-    private List<File> files = new ArrayList<>();
+    private ArrayList<File> files = new ArrayList<>();
     private Transport transport;
     private ArrayList<String> send = new ArrayList<>();
     private LinkedHashMap<String, List<String>> dataExcelLHM;
     private boolean hasExcel = false;
+    private boolean hasDate = false;
     private List<List<String>> dataExcel;
     private List<String> variables = new ArrayList<>();
     private ObservableList<String> filesNames = FXCollections.observableArrayList();
     private ObservableList<String> currentKeys = FXCollections.observableArrayList();
+    private Date date = null;
+
+    /**
+     * Initilize some Objects of the Scene
+     * @param url current
+     * @param resourceBundle current
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        anchorData.setVisible(true);
+        this.listFiles.setItems(this.filesNames);
+        this.listKeys.setItems(this.currentKeys);
+        this.datePicker.setVisible(false);
+        SpinnerValueFactory<Integer> hour = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23);
+        hour.setValue(8);
+        SpinnerValueFactory<Integer> minute = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59);
+        minute.setValue(8);
+        this.hour.setValueFactory(hour);
+        this.hour.setVisible(false);
+        this.minute.setValueFactory(minute);
+        this.minute.setVisible(false);
+        this.lbl_hour.setVisible(false);
+        this.lbl_min.setVisible(false);
+        this.colorPicker.setVisible(false);
+        this.lbl_background.setVisible(false);
+        this.colorPicker.valueProperty().addListener((observable -> {
+            center.setStyle(
+                    "-fx-background-color: #" + colorPicker.getValue().toString().substring(2,8) + ";"
+            );
+        }));
+    }
 
     /**
      * Handled all actions and validations to send an Email
@@ -114,6 +160,13 @@ public class Controller implements Initializable {
         String sent = this.emailToField.getText();
         String message = this.htmlEditor.getHtmlText();
         String code = this.htmlCode.getText();
+        if(hasDate){
+            LocalDate date1 = datePicker.getValue();
+            Calendar c = Calendar.getInstance();
+            c.set(date1.getYear(), date1.getMonthValue()-1, date1.getDayOfMonth());
+            this.date = c.getTime();
+        }else
+            this.date = new Date();
         if (subject.isBlank() || message.isBlank() || (!hasExcel && sent.isBlank())){
             Alerts.showAlertMessage(Alert.AlertType.WARNING, "Missing information", "Some Fields are empty");
         }else{
@@ -130,7 +183,7 @@ public class Controller implements Initializable {
             }
             if(this.hasExcel){ //with some variables to be replaced in excel
                 Analyzer analyzer = new Analyzer(message);
-                for (int i = 0; i < this.send.size() || i <= 100; i++) {
+                for (int i = 0; i < this.send.size()-1 || i <= 100; i++) {
                     String email = this.send.get(i);
                     if ( i+1 < this.dataExcel.size()){// i+1 to ignore Index 0 because has the column Names
                         //System.out.println("Llamadas Analyzer + " + analyzer.replace(this.variables, this.dataExcel.get(i+1)));
@@ -149,7 +202,7 @@ public class Controller implements Initializable {
                         }
                         String newMessage = analyzer.replace(this.variables, this.dataExcel.get(i+1));
                         try {
-                            EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, newMessage, files);
+                            EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, newMessage, files, this.date);
                             sender.sendMessage();
                         } catch (MessagingException e) {
                             Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message to" + email +"\n" + e.getMessage());
@@ -170,7 +223,7 @@ public class Controller implements Initializable {
                 }
                 for (String email: this.send) {
                     try {
-                        EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, message, files);
+                        EmailSenderService sender = new EmailSenderService(this.transport,this.session, subject, email, message, files, this.date);
                         sender.sendMessage();
                     } catch (MessagingException e) {
                         Alerts.showAlertMessage(Alert.AlertType.ERROR, "Messaging Exception", "Error sending message to" + email +"\n" + e.getMessage());
@@ -190,6 +243,11 @@ public class Controller implements Initializable {
             this.currentKeys.clear();
             this.variables.clear();
             this.hasExcel = false;
+            this.hasDate = false;
+            this.hour.setVisible(false);
+            this.minute.setVisible(false);
+            this.lbl_hour.setVisible(false);
+            this.lbl_min.setVisible(false);
         }
     }
 
@@ -203,7 +261,9 @@ public class Controller implements Initializable {
         Stage stage = (Stage) vbox.getScene().getWindow();
         List<File> list = fileChooser.showOpenMultipleDialog(stage);
         if (list != null){
-            this.files = list;
+            for (File file: list) {
+                this.files.add(file);
+            }
             for (File file:this.files) {
                 this.filesNames.add(file.getName());
             }
@@ -291,13 +351,45 @@ public class Controller implements Initializable {
         this.session = session;
     }
 
-    public void changeColors(ActionEvent actionEvent) {
+    public void changeColors(ActionEvent actionEvent) throws IOException {
+        /*Stage currenStage = (Stage) this.changeColors.getGraphic().getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("exampleDynamicCss.fxml"));
+        System.out.println(getClass().getResource("exampleDynamicCss.fxml"));
+        currenStage.setScene(new Scene(loader.load()));*/
+        this.colorPicker.setVisible(true);
+        this.lbl_background.setVisible(true);
     }
 
     public void changeIcon(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Change Image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
+        Stage stage = (Stage) vbox.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file == null){
+            Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
+            return;
+        }else {
+            if (!file.isFile()){
+                Alerts.showAlertMessage(Alert.AlertType.ERROR,"Error", "Something is wrong with the file\n Please check again!");
+                return;
+            }else
+                Alerts.showAlertMessage(Alert.AlertType.INFORMATION, "Information", "Icon Saved");
+        }
     }
 
     public void loadConfig(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select file");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Configuration Files", "*.properties"));
+        Stage stage = (Stage) vbox.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file == null){
+            Alerts.showAlertMessage(Alert.AlertType.ERROR, "ERROR", "Empty properties file");
+            return;
+        }else {
+            Alerts.showAlertMessage(Alert.AlertType.INFORMATION, "Information", "Properties loaded");
+        }
     }
 
     /**
@@ -398,20 +490,14 @@ public class Controller implements Initializable {
      * @param actionEvent button clicked
      */
     public void scheduleSend(ActionEvent actionEvent) {
+        this.datePicker.setVisible(true);
+        this.hour.setVisible(true);
+        this.minute.setVisible(true);
+        this.lbl_hour.setVisible(true);
+        this.lbl_min.setVisible(true);
+        this.hasDate = true;
     }
 
-    /**
-     * Initilize some Objects of the Scene
-     * @param url current
-     * @param resourceBundle current
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        anchorData.setVisible(true);
-        this.listFiles.setItems(this.filesNames);
-        this.listKeys.setItems(this.currentKeys);
-
-    }
 
     /** @deprecated
      * When "enter" is pressed, get current CaretPosition from the message and insert text
