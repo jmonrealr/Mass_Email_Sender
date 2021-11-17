@@ -183,7 +183,7 @@ public class Controller implements Initializable {
             }
             if(this.hasExcel){ //with some variables to be replaced in excel
                 Analyzer analyzer = new Analyzer(message);
-                for (int i = 0; i < this.send.size()-1 || i <= 100; i++) {
+                for (int i = 0; i < this.send.size() && i <= 100; i++) {
                     String email = this.send.get(i);
                     if ( i+1 < this.dataExcel.size()){// i+1 to ignore Index 0 because has the column Names
                         //System.out.println("Llamadas Analyzer + " + analyzer.replace(this.variables, this.dataExcel.get(i+1)));
@@ -356,8 +356,8 @@ public class Controller implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("exampleDynamicCss.fxml"));
         System.out.println(getClass().getResource("exampleDynamicCss.fxml"));
         currenStage.setScene(new Scene(loader.load()));*/
-        this.colorPicker.setVisible(true);
-        this.lbl_background.setVisible(true);
+        //this.colorPicker.setVisible(true);
+        //this.lbl_background.setVisible(true);
     }
 
     public void changeIcon(ActionEvent actionEvent) {
@@ -490,16 +490,16 @@ public class Controller implements Initializable {
      * @param actionEvent button clicked
      */
     public void scheduleSend(ActionEvent actionEvent) {
-        this.datePicker.setVisible(true);
-        this.hour.setVisible(true);
-        this.minute.setVisible(true);
-        this.lbl_hour.setVisible(true);
-        this.lbl_min.setVisible(true);
-        this.hasDate = true;
+        //this.datePicker.setVisible(true);
+        //this.hour.setVisible(true);
+        //this.minute.setVisible(true);
+        //this.lbl_hour.setVisible(true);
+        //this.lbl_min.setVisible(true);
+        //this.hasDate = true;
     }
 
 
-    /** @deprecated
+    /** @Deprecated
      * When "enter" is pressed, get current CaretPosition from the message and insert text
      * with the html tag <br>
      * @param key pressed from the keyboard

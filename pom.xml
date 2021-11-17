@@ -77,11 +77,11 @@
       <artifactId>html2pdf</artifactId>
       <version>2.1.6</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+    <!-- Java Mail -->
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.5.0-b01</version>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.2</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
     <dependency>

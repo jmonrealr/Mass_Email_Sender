@@ -41,6 +41,7 @@ public class LoginController {
             props.put("mail.smtp.host", Config.getProperty("mail.smtp.host")); //SMTP Host
             props.put("mail.smtp.port", Config.getProperty("mail.smtp.port")); //TLS Port
             props.put("mail.smtp.auth", Config.getProperty("mail.smtp.auth")); //enable authentication
+            props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
             props.put("mail.smtp.starttls.enable", Config.getProperty("mail.smtp.starttls.enable")); //enable STARTTLS
             Authenticator auth = new Authenticator() {
                 @Override
@@ -62,14 +63,19 @@ public class LoginController {
                 stage.setResizable(true);
                 stage.show();
             } catch (AuthenticationFailedException failedException) {
+                failedException.printStackTrace();
                 Alerts.showAlertMessage(Alert.AlertType.WARNING, "Error" , "Authentication Failed\n" + failedException.getMessage());
             } catch (NoSuchProviderException noSuchProviderException) {
+                noSuchProviderException.printStackTrace();
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", noSuchProviderException.getMessage());
             } catch (MessagingException messagingException) {
+                messagingException.printStackTrace();
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Error", "Error\n" + messagingException.getMessage());
             } catch (NoClassDefFoundError error){
+                error.printStackTrace();
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "Class not found!!", error.getMessage());
             } catch (IOException ioException) {
+                ioException.printStackTrace();
                 Alerts.showAlertMessage(Alert.AlertType.ERROR, "An I/O exception has occurred", "Exception produced by failed or interrupted I/O operations" + ioException.getMessage());
             }
         }else{
